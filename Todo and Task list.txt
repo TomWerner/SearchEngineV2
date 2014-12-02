@@ -1,0 +1,19 @@
+Broad Tasks:
+	Query parsing - Tom
+	RESTful interface - Cale
+	Multiple search types - Chris
+	Combining queries - Joe
+	
+Query Parsing plan:
+	Unit tests:
+		Test basic equality query is correctly parsed, single words
+		Test basic equality query is correctly parsed, multiple words using quotes
+		Test operator search
+			- being able to parse the operator
+			- parsing the operator arguments
+		Test combining queries
+			- parse the query operator (and/or)
+			- parse the different queries
+		Test correct query objects are created for each test
+	Integration tests:
+		Test String->QueryParser->Queries->Evaluate queries->Search results works as expected
