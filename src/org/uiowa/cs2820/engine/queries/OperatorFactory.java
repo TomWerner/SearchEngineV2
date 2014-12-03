@@ -9,4 +9,10 @@ public class OperatorFactory
         
         return null;
     }
+
+    public static QueryOperator getQueryOperator(String operator)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

@@ -6,8 +6,8 @@ import java.util.HashSet;
 public class Tokenizer
 {
     private static final char QUOTE = '\"';
-    private static final char START_FIELD = '(';
-    private static final char END_FIELD = ')';
+    private static final char START_FIELD = '{';
+    private static final char END_FIELD = '}';
     private static final char START_QUERY = '[';
     private static final char END_QUERY = ']';
     

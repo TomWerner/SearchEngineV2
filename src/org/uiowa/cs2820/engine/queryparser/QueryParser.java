@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import org.uiowa.cs2820.engine.Field;
 import org.uiowa.cs2820.engine.queries.FieldEquals;
 import org.uiowa.cs2820.engine.queries.FieldOperator;
+import org.uiowa.cs2820.engine.queries.MockMultipleQuery;
 import org.uiowa.cs2820.engine.queries.OperatorFactory;
 import org.uiowa.cs2820.engine.queries.Query;
+import org.uiowa.cs2820.engine.queries.QueryOperator;
+import org.uiowa.cs2820.engine.queries.QueryOr;
 import org.uiowa.cs2820.engine.queries.Queryable;
 
 public class QueryParser
@@ -30,61 +33,149 @@ public class QueryParser
         {
             if (current.getType() != Token.QUERY_START) // Only one query
             {
-                FieldOperator fieldOp = new FieldEquals();
-                String fieldName;
-                String fieldValue;
-
-                if (current.getType() == Token.FIELD_OPERATOR) // Not the
-                                                               // default
-                {
-                    fieldOp = OperatorFactory.getFieldOperator(current.getString());
-                    index++;
-                    current = tokens.get(index);
-                }
-
-                if (current.getType() != Token.FIELD_START)
-                    throw createParseError("Expected field start", index, tokens);
-                else
-                {
-                    index++;
-                    current = tokens.get(index);
-                }
-
-                if (current.getType() != Token.TERM) // Expecting field
-                    throw createParseError("Expected a term", index, tokens);
-                else
-                {
-                    fieldName = current.getString();
-                    index++;
-                    current = tokens.get(index);
-                }
-
-                if (current.getType() != Token.TERM) // Expecting field
-                    throw createParseError("Expected a term", index, tokens);
-                else
-                {
-                    fieldValue = current.getString();
-                    index++;
-                    current = tokens.get(index);
-                }
-
-                if (current.getType() != Token.FIELD_END)
-                    throw createParseError("Expected field end", index, tokens);
-
-                if (index != tokens.size() - 1)
-                    throw createParseError("Unexpected token after field end", index, tokens);
-
-                // We made it!
-                Query query = new Query(new Field(fieldName, fieldValue), fieldOp);
+                Query query = parseSingleQuery(0, tokens.size() - 1, tokens);
                 queries.add(query);
             }
+            else
+            {
+                // Now we find the first query
+                // Since index is at the QUERY_START, index + 1 is start
+                int start = index + 1;
+                while (current.getType() != Token.QUERY_END)
+                {
+                    index++;
+                    current = tokens.get(index);
+                }
+                int stop = index - 1; // index is at QUERY_END
+                Query query = parseSingleQuery(start, stop, tokens);
+                queries.add(query);
+
+                // There are still tokens left
+                while (index < tokens.size() - 1)
+                {
+                    // Advance to the next token
+                    index++;
+                    current = tokens.get(index);
+
+                    // Check to see if there is a specified query
+                    QueryOperator queryOp = new QueryOr(); // TODO: Do something
+                                                           // with this
+                    if (current.getType() == Token.QUERY_OPERATOR)
+                    {
+                        queryOp = OperatorFactory.getQueryOperator(current.getString());
+                        index++;
+                        current = tokens.get(index);
+                    }
+
+                    // If we're not on a query, something went wrong
+                    if (current.getType() != Token.QUERY_START)
+                        throw createParseError("Expected another query", index, tokens);
+
+                    // Start is one past the query start
+                    start = index + 1;
+
+                    // Find the end
+                    while (current.getType() != Token.QUERY_END)
+                    {
+                        index++;
+                        current = tokens.get(index);
+                    }
+                    stop = index - 1; // index is at QUERY_END
+                    query = parseSingleQuery(start, stop, tokens);
+                    queries.add(query);
+                }
+            }
+        }
+        catch (IndexOutOfBoundsException e)
+        {
+            e.printStackTrace();
+            throw createParseError("Index out of bounds", index, tokens);
+        }
+
+        // TODO: Fix this
+        if (queries.size() == 1)
+            return queries.get(0);
+        else
+            return new MockMultipleQuery(queries);
+    }
+
+    /**
+     * 
+     * @param start
+     *            First index of the query, excluding the QUERY_START token
+     * @param stop
+     *            Last index of the query, excluding the QUERY_STOP token
+     * @param tokens
+     *            Full list of tokens
+     * @return The query created from the tokens
+     * 
+     *         Example: Tokens = [ "[", "equals", "(", "name", "value", ")", "]"
+     *         ] The function call would be parseSingleQuery(1, 5, tokens)
+     * @throws ParsingException
+     */
+    protected Query parseSingleQuery(int start, int stop, ArrayList<Token> tokens) throws ParsingException
+    {
+        int index = start;
+        try
+        {
+            Token current = tokens.get(index);
+            FieldOperator fieldOp = new FieldEquals();
+            String fieldName;
+            String fieldValue;
+
+            // If an operator is specified
+            if (current.getType() == Token.FIELD_OPERATOR)
+            {
+                fieldOp = OperatorFactory.getFieldOperator(current.getString());
+                index++;
+                current = tokens.get(index);
+            }
+
+            // If a field doesn't follow something went wrong
+            if (current.getType() != Token.FIELD_START)
+                throw createParseError("Expected field start", index, tokens);
+            else
+            {
+                index++;
+                current = tokens.get(index);
+            }
+
+            // If a term isn't in the field something went wrong
+            if (current.getType() != Token.TERM) // Expecting field
+                throw createParseError("Expected a term", index, tokens);
+            else
+            {
+                fieldName = current.getString();
+                index++;
+                current = tokens.get(index);
+            }
+
+            // If a term isn't in the field something went wrong
+            if (current.getType() != Token.TERM) // Expecting field
+                throw createParseError("Expected a term", index, tokens);
+            else
+            {
+                fieldValue = current.getString();
+                index++;
+                current = tokens.get(index);
+            }
+
+            // If the field doesn't end something went wrong
+            if (current.getType() != Token.FIELD_END)
+                throw createParseError("Expected field end", index, tokens);
+
+            // If there are still tokens left something went wrong
+            if (index != stop)
+                throw createParseError("Unexpected token after field end", index, tokens);
+
+            // We made it!
+            Query query = new Query(new Field(fieldName, fieldValue), fieldOp);
+            return query;
         }
         catch (IndexOutOfBoundsException e)
         {
             throw createParseError("Index out of bounds", index, tokens);
         }
-
-        return queries.get(0);
     }
 
     private ParsingException createParseError(String string, int index, ArrayList<Token> tokens)
