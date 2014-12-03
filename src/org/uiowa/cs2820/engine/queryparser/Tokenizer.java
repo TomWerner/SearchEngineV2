@@ -50,11 +50,11 @@ public class Tokenizer
                     tokens.add(new Token(currentToken.toString(), Token.FIELD_OPERATOR));
                     currentToken = new StringBuffer();
                 }
-                tokens.add(new Token("" + current, Token.START_FIELD));
+                tokens.add(new Token("" + current, Token.FIELD_START));
             }
             else if (current == END_FIELD)
             {
-                tokens.add(new Token("" + current, Token.END_FIELD));
+                tokens.add(new Token("" + current, Token.FIELD_END));
                 currentToken = new StringBuffer();
             }
             else if (current == START_QUERY)
@@ -64,11 +64,11 @@ public class Tokenizer
                     tokens.add(new Token(currentToken.toString(), Token.QUERY_OPERATOR));
                     currentToken = new StringBuffer();
                 }
-                tokens.add(new Token("" + current, Token.START_FIELD));
+                tokens.add(new Token("" + current, Token.QUERY_START));
             }
             else if (current == END_QUERY)
             {
-                tokens.add(new Token("" + current, Token.END_QUERY));
+                tokens.add(new Token("" + current, Token.QUERY_END));
                 currentToken = new StringBuffer();
             }
             else if (!whitespace.contains(current))

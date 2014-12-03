@@ -57,7 +57,7 @@ public class TokenizerTest
         ArrayList<Token> tokens = tokenizer.tokenize(string);
 
         assertEquals("(", tokens.get(0).getString());
-        assertEquals(Token.START_FIELD, tokens.get(0).getType());
+        assertEquals(Token.FIELD_START, tokens.get(0).getType());
         
         assertEquals("Term", tokens.get(1).getString());
         assertEquals(Token.TERM, tokens.get(1).getType());
@@ -66,7 +66,7 @@ public class TokenizerTest
         assertEquals(Token.TERM, tokens.get(2).getType());
         
         assertEquals(")", tokens.get(3).getString());
-        assertEquals(Token.END_FIELD, tokens.get(3).getType());
+        assertEquals(Token.FIELD_END, tokens.get(3).getType());
     }
 
     @Test
@@ -77,7 +77,7 @@ public class TokenizerTest
         ArrayList<Token> tokens = tokenizer.tokenize(string);
 
         assertEquals("(", tokens.get(0).getString());
-        assertEquals(Token.START_FIELD, tokens.get(0).getType());
+        assertEquals(Token.FIELD_START, tokens.get(0).getType());
         
         assertEquals("Term", tokens.get(1).getString());
         assertEquals(Token.TERM, tokens.get(1).getType());
@@ -86,7 +86,7 @@ public class TokenizerTest
         assertEquals(Token.TERM, tokens.get(2).getType());
         
         assertEquals(")", tokens.get(3).getString());
-        assertEquals(Token.END_FIELD, tokens.get(3).getType());
+        assertEquals(Token.FIELD_END, tokens.get(3).getType());
     }
 
     @Test
@@ -100,7 +100,7 @@ public class TokenizerTest
         assertEquals(Token.FIELD_OPERATOR, tokens.get(0).getType());
         
         assertEquals("(",tokens.get(1).getString());
-        assertEquals(Token.START_FIELD, tokens.get(1).getType());
+        assertEquals(Token.FIELD_START, tokens.get(1).getType());
         
         assertEquals("Term", tokens.get(2).getString());
         assertEquals(Token.TERM, tokens.get(2).getType());
@@ -109,7 +109,7 @@ public class TokenizerTest
         assertEquals(Token.TERM, tokens.get(3).getType());
         
         assertEquals(")", tokens.get(4).getString());
-        assertEquals(Token.END_FIELD, tokens.get(4).getType());
+        assertEquals(Token.FIELD_END, tokens.get(4).getType());
     }
 
     @Test
@@ -123,7 +123,7 @@ public class TokenizerTest
         assertEquals(Token.FIELD_OPERATOR, tokens.get(0).getType());
         
         assertEquals("(",tokens.get(1).getString());
-        assertEquals(Token.START_FIELD, tokens.get(1).getType());
+        assertEquals(Token.FIELD_START, tokens.get(1).getType());
         
         assertEquals("Term", tokens.get(2).getString());
         assertEquals(Token.TERM, tokens.get(2).getType());
@@ -132,6 +132,60 @@ public class TokenizerTest
         assertEquals(Token.TERM, tokens.get(3).getType());
         
         assertEquals(")", tokens.get(4).getString());
-        assertEquals(Token.END_FIELD, tokens.get(4).getType());
+        assertEquals(Token.FIELD_END, tokens.get(4).getType());
     }
+
+    @Test
+    public void testDoubleTermSurroundedByFieldWithOperatorAndWhitespaceAndQueryParse()
+    {
+        String string = "[ operator ( \"Term\", \"Term2\" ) ]";
+        Tokenizer tokenizer = new Tokenizer();
+        ArrayList<Token> tokens = tokenizer.tokenize(string);
+
+        assertEquals("[", tokens.get(0).getString());
+        assertEquals(Token.QUERY_START, tokens.get(0).getType());
+        
+        assertEquals("operator", tokens.get(1).getString());
+        assertEquals(Token.FIELD_OPERATOR, tokens.get(1).getType());
+        
+        assertEquals("(",tokens.get(2).getString());
+        assertEquals(Token.FIELD_START, tokens.get(2).getType());
+        
+        assertEquals("Term", tokens.get(3).getString());
+        assertEquals(Token.TERM, tokens.get(3).getType());
+        
+        assertEquals("Term2", tokens.get(4).getString());
+        assertEquals(Token.TERM, tokens.get(4).getType());
+
+        assertEquals(")", tokens.get(5).getString());
+        assertEquals(Token.FIELD_END, tokens.get(5).getType());
+        
+        assertEquals("]", tokens.get(6).getString());
+        assertEquals(Token.QUERY_END, tokens.get(6).getType());
+    }
+
+    @Test
+    public void testOperatorBetweenQueryParse()
+    {
+        String string = "[] and []";
+        Tokenizer tokenizer = new Tokenizer();
+        ArrayList<Token> tokens = tokenizer.tokenize(string);
+
+        assertEquals("[", tokens.get(0).getString());
+        assertEquals(Token.QUERY_START, tokens.get(0).getType());
+        
+        assertEquals("]", tokens.get(1).getString());
+        assertEquals(Token.QUERY_END, tokens.get(1).getType());
+        
+        assertEquals("and", tokens.get(2).getString());
+        assertEquals(Token.QUERY_OPERATOR, tokens.get(2).getType());
+
+        assertEquals("[", tokens.get(3).getString());
+        assertEquals(Token.QUERY_START, tokens.get(3).getType());
+        
+        assertEquals("]", tokens.get(4).getString());
+        assertEquals(Token.QUERY_END, tokens.get(4).getType());
+    }
+    
+    
 }
