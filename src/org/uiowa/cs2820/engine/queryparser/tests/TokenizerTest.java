@@ -52,11 +52,11 @@ public class TokenizerTest
     @Test
     public void testDoubleTermSurroundedByFieldParse()
     {
-        String string = "(\"Term\", \"Term2\")";
+        String string = "{\"Term\", \"Term2\"}";
         Tokenizer tokenizer = new Tokenizer();
         ArrayList<Token> tokens = tokenizer.tokenize(string);
 
-        assertEquals("(", tokens.get(0).getString());
+        assertEquals("{", tokens.get(0).getString());
         assertEquals(Token.FIELD_START, tokens.get(0).getType());
         
         assertEquals("Term", tokens.get(1).getString());
@@ -65,18 +65,18 @@ public class TokenizerTest
         assertEquals("Term2", tokens.get(2).getString());
         assertEquals(Token.TERM, tokens.get(2).getType());
         
-        assertEquals(")", tokens.get(3).getString());
+        assertEquals("}", tokens.get(3).getString());
         assertEquals(Token.FIELD_END, tokens.get(3).getType());
     }
 
     @Test
     public void testDoubleTermSurroundedByFieldWithGarbageParse()
     {
-        String string = "(sadfh\"Term\"gasd,gasdg\"Term2\"sadfasd)";
+        String string = "{sadfh\"Term\"gasd,gasdg\"Term2\"sadfasd}";
         Tokenizer tokenizer = new Tokenizer();
         ArrayList<Token> tokens = tokenizer.tokenize(string);
 
-        assertEquals("(", tokens.get(0).getString());
+        assertEquals("{", tokens.get(0).getString());
         assertEquals(Token.FIELD_START, tokens.get(0).getType());
         
         assertEquals("Term", tokens.get(1).getString());
@@ -85,21 +85,21 @@ public class TokenizerTest
         assertEquals("Term2", tokens.get(2).getString());
         assertEquals(Token.TERM, tokens.get(2).getType());
         
-        assertEquals(")", tokens.get(3).getString());
+        assertEquals("}", tokens.get(3).getString());
         assertEquals(Token.FIELD_END, tokens.get(3).getType());
     }
 
     @Test
     public void testDoubleTermSurroundedByFieldWithOperatorParse()
     {
-        String string = "operator(\"Term\", \"Term2\")";
+        String string = "operator{\"Term\", \"Term2\"}";
         Tokenizer tokenizer = new Tokenizer();
         ArrayList<Token> tokens = tokenizer.tokenize(string);
 
         assertEquals("operator", tokens.get(0).getString());
         assertEquals(Token.FIELD_OPERATOR, tokens.get(0).getType());
         
-        assertEquals("(",tokens.get(1).getString());
+        assertEquals("{",tokens.get(1).getString());
         assertEquals(Token.FIELD_START, tokens.get(1).getType());
         
         assertEquals("Term", tokens.get(2).getString());
@@ -108,21 +108,21 @@ public class TokenizerTest
         assertEquals("Term2", tokens.get(3).getString());
         assertEquals(Token.TERM, tokens.get(3).getType());
         
-        assertEquals(")", tokens.get(4).getString());
+        assertEquals("}", tokens.get(4).getString());
         assertEquals(Token.FIELD_END, tokens.get(4).getType());
     }
 
     @Test
     public void testDoubleTermSurroundedByFieldWithOperatorAndWhitespaceParse()
     {
-        String string = " operator (\"Term\", \"Term2\")";
+        String string = " operator {\"Term\", \"Term2\"}";
         Tokenizer tokenizer = new Tokenizer();
         ArrayList<Token> tokens = tokenizer.tokenize(string);
 
         assertEquals("operator", tokens.get(0).getString());
         assertEquals(Token.FIELD_OPERATOR, tokens.get(0).getType());
         
-        assertEquals("(",tokens.get(1).getString());
+        assertEquals("{",tokens.get(1).getString());
         assertEquals(Token.FIELD_START, tokens.get(1).getType());
         
         assertEquals("Term", tokens.get(2).getString());
@@ -131,14 +131,14 @@ public class TokenizerTest
         assertEquals("Term2", tokens.get(3).getString());
         assertEquals(Token.TERM, tokens.get(3).getType());
         
-        assertEquals(")", tokens.get(4).getString());
+        assertEquals("}", tokens.get(4).getString());
         assertEquals(Token.FIELD_END, tokens.get(4).getType());
     }
 
     @Test
     public void testDoubleTermSurroundedByFieldWithOperatorAndWhitespaceAndQueryParse()
     {
-        String string = "[ operator ( \"Term\", \"Term2\" ) ]";
+        String string = "[ operator { \"Term\", \"Term2\" } ]";
         Tokenizer tokenizer = new Tokenizer();
         ArrayList<Token> tokens = tokenizer.tokenize(string);
 
@@ -148,7 +148,7 @@ public class TokenizerTest
         assertEquals("operator", tokens.get(1).getString());
         assertEquals(Token.FIELD_OPERATOR, tokens.get(1).getType());
         
-        assertEquals("(",tokens.get(2).getString());
+        assertEquals("{",tokens.get(2).getString());
         assertEquals(Token.FIELD_START, tokens.get(2).getType());
         
         assertEquals("Term", tokens.get(3).getString());
@@ -157,7 +157,7 @@ public class TokenizerTest
         assertEquals("Term2", tokens.get(4).getString());
         assertEquals(Token.TERM, tokens.get(4).getType());
 
-        assertEquals(")", tokens.get(5).getString());
+        assertEquals("}", tokens.get(5).getString());
         assertEquals(Token.FIELD_END, tokens.get(5).getType());
         
         assertEquals("]", tokens.get(6).getString());

@@ -5,6 +5,17 @@ Broad Tasks:
 	Combining queries - Joe
 	
 Query Parsing plan:
+	Classes To Build:
+		Tokenizer - takes a string and returns a list of tokens
+			- tests: by checking all the different patterns of input and failure conditions
+			- uses: Token
+			- used by: QueryParser
+		Token - holds a string and type pair
+			- used by: Tokenizer, QueryParser
+		QueryParser - top level class that takes a string and returns a query
+			- tests: Give it all the different input cases and check output
+			- uses: Tokenizer, Token
+			- used by: Unknown at the time
 	Unit tests:
 		Test basic equality query is correctly parsed, single words
 		Test basic equality query is correctly parsed, multiple words using quotes
@@ -15,5 +26,12 @@ Query Parsing plan:
 			- parse the query operator (and/or)
 			- parse the different queries
 		Test correct query objects are created for each test
+		Parenthesized query handling
 	Integration tests:
 		Test String->QueryParser->Queries->Evaluate queries->Search results works as expected
+	Libraries used:
+		None
+	Possible improvements:
+		Make the Tokenizer more modular, stop hardcoding the values of the tokens
+		Allow loading a settings file for the parsing
+		
