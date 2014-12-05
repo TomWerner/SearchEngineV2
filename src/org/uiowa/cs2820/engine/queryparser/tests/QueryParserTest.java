@@ -122,7 +122,7 @@ public class QueryParserTest
     {
         QueryParser parser = new QueryParser();
         String expression = "";
-        int number = 10;
+        int number = 2;
         for (int i = 0; i < number; i++)
             expression += "[equals {\"Field\", \"" + i + "\"}]";
         

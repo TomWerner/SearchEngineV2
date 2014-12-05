@@ -20,6 +20,7 @@ public class QueryParser
     public QueryParser()
     {
         tokenizer = new Tokenizer();
+        
     }
 
     public Queryable parseExpression(String expression) throws ParsingException
@@ -28,10 +29,9 @@ public class QueryParser
         ArrayList<Query> queries = new ArrayList<Query>();
 
         int index = 0;
-        Token current = tokens.get(index);
         try
         {
-            if (current.getType() != Token.QUERY_START) // Only one query
+            if (tokens.get(index).getType() != Token.QUERY_START) // Only one query
             {
                 Query query = parseSingleQuery(0, tokens.size() - 1, tokens);
                 queries.add(query);
@@ -40,14 +40,10 @@ public class QueryParser
             {
                 // Now we find the first query
                 // Since index is at the QUERY_START, index + 1 is start
-                int start = index + 1;
-                while (current.getType() != Token.QUERY_END)
-                {
-                    index++;
-                    current = tokens.get(index);
-                }
-                int stop = index - 1; // index is at QUERY_END
-                Query query = parseSingleQuery(start, stop, tokens);
+            	expectedTokenFound(Token.QUERY_START, index, tokens);
+                int endPosition = findNextInstance(Token.QUERY_END, tokens, index + 1);
+                Query query = parseSingleQuery(index + 1, endPosition - 1, tokens);
+                index = endPosition;
                 queries.add(query);
 
                 // There are still tokens left
@@ -55,32 +51,21 @@ public class QueryParser
                 {
                     // Advance to the next token
                     index++;
-                    current = tokens.get(index);
 
                     // Check to see if there is a specified query
                     QueryOperator queryOp = new QueryOr(); // TODO: Do something
                                                            // with this
-                    if (current.getType() == Token.QUERY_OPERATOR)
+                    if (tokens.get(index).getType() == Token.QUERY_OPERATOR)
                     {
-                        queryOp = OperatorFactory.getQueryOperator(current.getString());
+                        queryOp = OperatorFactory.getQueryOperator(tokens.get(index).getString());
                         index++;
-                        current = tokens.get(index);
                     }
 
                     // If we're not on a query, something went wrong
                     expectedTokenFound(Token.QUERY_START, index, tokens);
-
-                    // Start is one past the query start
-                    start = index + 1;
-
-                    // Find the end
-                    while (current.getType() != Token.QUERY_END)
-                    {
-                        index++;
-                        current = tokens.get(index);
-                    }
-                    stop = index - 1; // index is at QUERY_END
-                    query = parseSingleQuery(start, stop, tokens);
+                    endPosition = findNextInstance(Token.QUERY_END, tokens, index + 1);
+                    query = parseSingleQuery(index + 1, endPosition - 1, tokens);
+                    index = endPosition;
                     queries.add(query);
                 }
             }
@@ -177,5 +162,13 @@ public class QueryParser
         message += "\nError at: " + index;
         return new ParsingException(message);
     }
+	
+	private int findNextInstance(int tokenType, ArrayList<Token> tokens, int startIndex)
+	{
+		// Find the end
+        while (tokens.get(startIndex).getType() != tokenType)
+            startIndex++;
+        return startIndex;
+	}
 
 }
