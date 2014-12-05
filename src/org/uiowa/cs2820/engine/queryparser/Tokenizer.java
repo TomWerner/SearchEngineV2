@@ -5,13 +5,13 @@ import java.util.HashSet;
 
 public class Tokenizer
 {
-    private static final char QUOTE = '\"';
-    private static final char START_FIELD = '{';
-    private static final char END_FIELD = '}';
-    private static final char START_QUERY = '[';
-    private static final char END_QUERY = ']';
+    private char QUOTE = '\"';
+    private char START_FIELD = '{';
+    private char END_FIELD = '}';
+    private char START_QUERY = '[';
+    private char END_QUERY = ']';
     
-    private static HashSet<Character> whitespace = new HashSet<Character>();
+    private HashSet<Character> whitespace = new HashSet<Character>();
     {{
         whitespace.add(' ');
         whitespace.add('.');
@@ -20,7 +20,16 @@ public class Tokenizer
 
     public Tokenizer()
     {
-
+    }
+    
+    public Tokenizer(char quote, char startField, char endField, char startQuery, char endQUery, HashSet<Character> whitespace)
+    {
+    	this.QUOTE = quote;
+    	this.START_FIELD = startField;
+    	this.END_FIELD = endField;
+    	this.START_QUERY = startQuery;
+    	this.END_QUERY = endQUery;
+    	this.whitespace = whitespace;
     }
 
     public ArrayList<Token> tokenize(String string)

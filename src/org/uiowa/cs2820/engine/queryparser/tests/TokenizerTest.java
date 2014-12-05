@@ -3,6 +3,7 @@ package org.uiowa.cs2820.engine.queryparser.tests;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.junit.Test;
 import org.uiowa.cs2820.engine.queryparser.Token;
@@ -161,6 +162,47 @@ public class TokenizerTest
         assertEquals(Token.FIELD_END, tokens.get(5).getType());
         
         assertEquals("]", tokens.get(6).getString());
+        assertEquals(Token.QUERY_END, tokens.get(6).getType());
+    }
+    
+    
+    /*
+     * This test shows that the token values aren't hardcoded and can be changed
+     * by a user who wants to change the characters
+     */
+    @Test
+    public void testDoubleTermSurroundedByFieldWithOperatorAndWhitespaceAndQueryParseAndAlternateTokens()
+    {
+        String string = "{sdfsequaldsfsr( \'Term\', \'Term2\' ) }";
+        HashSet<Character> whitespace = new HashSet<Character>();
+        whitespace.add(' ');
+        whitespace.add(',');
+        whitespace.add('s');
+        whitespace.add('d');
+        whitespace.add('f');
+        whitespace.add('r');
+        Tokenizer tokenizer = new Tokenizer('\'', '(', ')', '{', '}', whitespace);
+        ArrayList<Token> tokens = tokenizer.tokenize(string);
+
+        assertEquals("{", tokens.get(0).getString());
+        assertEquals(Token.QUERY_START, tokens.get(0).getType());
+        
+        assertEquals("equal", tokens.get(1).getString());
+        assertEquals(Token.FIELD_OPERATOR, tokens.get(1).getType());
+        
+        assertEquals("(",tokens.get(2).getString());
+        assertEquals(Token.FIELD_START, tokens.get(2).getType());
+        
+        assertEquals("Term", tokens.get(3).getString());
+        assertEquals(Token.TERM, tokens.get(3).getType());
+        
+        assertEquals("Term2", tokens.get(4).getString());
+        assertEquals(Token.TERM, tokens.get(4).getType());
+
+        assertEquals(")", tokens.get(5).getString());
+        assertEquals(Token.FIELD_END, tokens.get(5).getType());
+        
+        assertEquals("}", tokens.get(6).getString());
         assertEquals(Token.QUERY_END, tokens.get(6).getType());
     }
 

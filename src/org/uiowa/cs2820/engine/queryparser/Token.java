@@ -34,4 +34,27 @@ public class Token
     {
         return string + " - " + type;
     }
+    
+    public static String getTypeName(int type)
+    {
+    	switch (type)
+    	{
+    		case TERM:
+    			return "Term";
+    		case FIELD_START:
+    			return "Field Start";
+    		case FIELD_END:
+    			return "Field End";
+    		case QUERY_START:
+    			return "Query Start";
+    		case QUERY_END:
+    			return "Query End";
+    		case FIELD_OPERATOR:
+    			return "Field Operator";
+    		case QUERY_OPERATOR:
+    			return "Query Operator";
+    		default:
+    			return "Unknown type";
+    	}
+    }
 }

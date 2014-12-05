@@ -68,8 +68,7 @@ public class QueryParser
                     }
 
                     // If we're not on a query, something went wrong
-                    if (current.getType() != Token.QUERY_START)
-                        throw createParseError("Expected another query", index, tokens);
+                    expectedTokenFound(Token.QUERY_START, index, tokens);
 
                     // Start is one past the query start
                     start = index + 1;
@@ -118,51 +117,37 @@ public class QueryParser
         int index = start;
         try
         {
-            Token current = tokens.get(index);
             FieldOperator fieldOp = new FieldEquals();
-            String fieldName;
-            String fieldValue;
+            String fieldName = null;
+            String fieldValue = null;
 
             // If an operator is specified
-            if (current.getType() == Token.FIELD_OPERATOR)
+            if (tokens.get(index).getType() == Token.FIELD_OPERATOR)
             {
-                fieldOp = OperatorFactory.getFieldOperator(current.getString());
+                fieldOp = OperatorFactory.getFieldOperator(tokens.get(index).getString());
                 index++;
-                current = tokens.get(index);
             }
 
             // If a field doesn't follow something went wrong
-            if (current.getType() != Token.FIELD_START)
-                throw createParseError("Expected field start", index, tokens);
-            else
-            {
+            if (expectedTokenFound(Token.FIELD_START, index, tokens))
                 index++;
-                current = tokens.get(index);
+
+            // If a term isn't in the field something went wrong
+            if (expectedTokenFound(Token.TERM, index, tokens))
+            {
+                fieldName = tokens.get(index).getString();
+                index++;
             }
 
             // If a term isn't in the field something went wrong
-            if (current.getType() != Token.TERM) // Expecting field
-                throw createParseError("Expected a term", index, tokens);
-            else
+            if (expectedTokenFound(Token.TERM, index, tokens))
             {
-                fieldName = current.getString();
+                fieldValue = tokens.get(index).getString();
                 index++;
-                current = tokens.get(index);
-            }
-
-            // If a term isn't in the field something went wrong
-            if (current.getType() != Token.TERM) // Expecting field
-                throw createParseError("Expected a term", index, tokens);
-            else
-            {
-                fieldValue = current.getString();
-                index++;
-                current = tokens.get(index);
             }
 
             // If the field doesn't end something went wrong
-            if (current.getType() != Token.FIELD_END)
-                throw createParseError("Expected field end", index, tokens);
+            expectedTokenFound(Token.FIELD_END, index, tokens);
 
             // If there are still tokens left something went wrong
             if (index != stop)
@@ -178,7 +163,14 @@ public class QueryParser
         }
     }
 
-    private ParsingException createParseError(String string, int index, ArrayList<Token> tokens)
+    private boolean expectedTokenFound(int tokenType, int index, ArrayList<Token> tokens) throws ParsingException 
+    {
+    	if (tokens.get(index).getType() != tokenType)
+            throw createParseError("Expected " + Token.getTypeName(tokenType), index, tokens);
+        return true;
+	}
+
+	private ParsingException createParseError(String string, int index, ArrayList<Token> tokens)
     {
         String message = string;
         message += "\nTokens: " + tokens;
