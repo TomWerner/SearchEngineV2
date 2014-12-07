@@ -23,9 +23,18 @@ public class Query implements Queryable
     {
         return operator;
     }
-    
+
     public String toString()
     {
         return operator.toString() + field.toString();
+    }
+
+    public boolean equals(Object other)
+    {
+        if (other instanceof Query)
+        {
+            return field.equals(((Query) other).field) && operator.getClass().equals(other.getClass());
+        }
+        return false;
     }
 }

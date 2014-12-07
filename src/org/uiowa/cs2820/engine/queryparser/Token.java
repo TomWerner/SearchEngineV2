@@ -9,6 +9,8 @@ public class Token
     public static final int QUERY_END = 4;
     public static final int FIELD_OPERATOR = 5;
     public static final int QUERY_OPERATOR = 6;
+    public static final int PAREN_START = 7;
+    public static final int PAREN_END = 8;
     
     
     private String string;
@@ -32,7 +34,7 @@ public class Token
     
     public String toString()
     {
-        return string + " - " + type;
+        return string;
     }
     
     public static String getTypeName(int type)
@@ -53,6 +55,10 @@ public class Token
     			return "Field Operator";
     		case QUERY_OPERATOR:
     			return "Query Operator";
+    		case PAREN_START:
+    		    return "Parenthesis Start";
+    		case PAREN_END:
+    		    return "Parenthesis End";
     		default:
     			return "Unknown type";
     	}

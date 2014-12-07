@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.uiowa.cs2820.engine.Field;
 import org.uiowa.cs2820.engine.queries.FieldEquals;
-import org.uiowa.cs2820.engine.queries.MockDoubleQuery;
+import org.uiowa.cs2820.engine.queries.DoubleQuery;
 import org.uiowa.cs2820.engine.queries.Query;
 import org.uiowa.cs2820.engine.queries.QueryAnd;
 import org.uiowa.cs2820.engine.queries.QueryOr;
@@ -90,7 +90,7 @@ public class SimpleTokenParserTest
     public void testTwoQueries() throws ParsingException
     {
         String expression = "[equal {\"Field\", \"Value\"}] and [{\"Field\", \"Other value\"}]";
-        MockDoubleQuery result = (MockDoubleQuery) parseString(expression);
+        DoubleQuery result = (DoubleQuery) parseString(expression);
 
         Query query1 = (Query) result.getQuery1();
         Query query2 = (Query) result.getQuery2();
@@ -108,7 +108,7 @@ public class SimpleTokenParserTest
     public void testTwoQueriesDefaultOperator() throws ParsingException
     {
         String expression = "[equal {\"Field\", \"Value\"}][{\"Field\", \"Other value\"}]";
-        MockDoubleQuery result = (MockDoubleQuery) parseString(expression);
+        DoubleQuery result = (DoubleQuery) parseString(expression);
 
         Query query1 = (Query) result.getQuery1();
         Query query2 = (Query) result.getQuery2();
@@ -130,7 +130,7 @@ public class SimpleTokenParserTest
         for (int i = 0; i < number; i++)
             expression += "[equals {\"Field\", \"" + i + "\"}]";
 
-        MockDoubleQuery result = (MockDoubleQuery) parseString(expression);
+        DoubleQuery result = (DoubleQuery) parseString(expression);
         // System.out.println(result);
         // n = 4
         // (((a, b), c), d)
@@ -142,13 +142,13 @@ public class SimpleTokenParserTest
         assertTrue(right.getOperator() instanceof FieldEquals);
 
         // Move down a layer
-        result = (MockDoubleQuery) result.getQuery1();
+        result = (DoubleQuery) result.getQuery1();
         right = ((Query) result.getQuery2());
         assertEquals(new Field("Field", "" + 2), right.getField());
         assertTrue(right.getOperator() instanceof FieldEquals);
 
         // Move down one more layer
-        result = (MockDoubleQuery) result.getQuery1();
+        result = (DoubleQuery) result.getQuery1();
         right = ((Query) result.getQuery2());
         assertEquals(new Field("Field", "" + 1), right.getField());
         assertTrue(right.getOperator() instanceof FieldEquals);
@@ -166,7 +166,7 @@ public class SimpleTokenParserTest
         for (int i = 0; i < number; i++)
             expression += "[equals {\"Field\", \"" + i + "\"}]";
 
-        MockDoubleQuery result = (MockDoubleQuery) parseString(expression);
+        DoubleQuery result = (DoubleQuery) parseString(expression);
         // System.out.println(result);
         // n = 4
         // (((a, b), c), d)
@@ -180,7 +180,7 @@ public class SimpleTokenParserTest
         for (int i = number - 2; i >= 1; i--)
         {
             // Move down a layer
-            result = (MockDoubleQuery) result.getQuery1();
+            result = (DoubleQuery) result.getQuery1();
             right = ((Query) result.getQuery2());
 
             right = ((Query) result.getQuery2());

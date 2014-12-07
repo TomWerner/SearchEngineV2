@@ -1,20 +1,21 @@
 package org.uiowa.cs2820.engine.queryparser;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 import org.uiowa.cs2820.engine.Field;
+import org.uiowa.cs2820.engine.queries.DoubleQuery;
 import org.uiowa.cs2820.engine.queries.FieldEquals;
 import org.uiowa.cs2820.engine.queries.FieldOperator;
-import org.uiowa.cs2820.engine.queries.DoubleQuery;
 import org.uiowa.cs2820.engine.queries.OperatorFactory;
 import org.uiowa.cs2820.engine.queries.Query;
 import org.uiowa.cs2820.engine.queries.QueryOperator;
 import org.uiowa.cs2820.engine.queries.QueryOr;
 import org.uiowa.cs2820.engine.queries.Queryable;
 
-public class SimpleTokenParser implements TokenParser
+public class ComplexTokenParser implements TokenParser
 {
-    public SimpleTokenParser()
+    public ComplexTokenParser()
     {
     }
     
@@ -24,22 +25,26 @@ public class SimpleTokenParser implements TokenParser
     @Override
     public Queryable parseTokens(ArrayList<Token> tokens) throws ParsingException
     {
-        ArrayList<Queryable> queries = new ArrayList<Queryable>();
-        
-        for (Token token : tokens)
-            if (token.getType() == Token.PAREN_START || token.getType() == Token.PAREN_END)
-                throw new UnsupportedOperationException("SimpleTokenParser doesn't handle parenthesized expressions");
+        ArrayList<Object> queries = new ArrayList<Object>();
 
         int index = 0;
         try
         {
+            // Always starts with a parenthesis
+            while (tokenFound(Token.PAREN_START, index, tokens))
+            {
+                queries.add(tokens.get(index));
+                index++;
+            }
+            
             if (tokens.get(index).getType() != Token.QUERY_START) // Only one query
             {
-                Query query = parseSingleQuery(0, tokens.size() - 1, tokens);
+                Query query = parseSingleQuery(1, tokens.size() - 2, tokens);
                 queries.add(query);
             }
             else
             {
+                
                 // Now we find the first query
                 // Since index is at the QUERY_START, index + 1 is start
                 expectedTokenFound(Token.QUERY_START, index, tokens);
@@ -48,11 +53,23 @@ public class SimpleTokenParser implements TokenParser
                 index = endPosition;
                 queries.add(query);
 
-                // There are still tokens left
-                while (index < tokens.size() - 1)
+                // There are still tokens left, -2 b/c we can ignore the last paren
+                while (index < tokens.size() - 2)
                 {
                     // Advance to the next token
                     index++;
+
+
+                    while (tokenFound(Token.PAREN_END, index, tokens))
+                    {
+                        queries.add(tokens.get(index));
+                        index++;
+                    }
+                    while (tokenFound(Token.PAREN_START, index, tokens))
+                    {
+                        queries.add(tokens.get(index));
+                        index++;
+                    }
 
                     // Check to see if there is a specified query
                     QueryOperator queryOp = new QueryOr();
@@ -67,8 +84,16 @@ public class SimpleTokenParser implements TokenParser
                     endPosition = findNextInstance(Token.QUERY_END, tokens, index + 1);
                     query = parseSingleQuery(index + 1, endPosition - 1, tokens);
                     index = endPosition;
-                    queries.set(0, new DoubleQuery(queries.get(0), query, queryOp));
+                    queries.add(queryOp);
+                    queries.add(query);
                 }
+            }
+            
+            // Always ends with a parenthesis
+            if (expectedTokenFound(Token.PAREN_END, tokens.size() - 1, tokens))
+            {
+                queries.add(tokens.get(tokens.size() - 1));
+                index++;
             }
         }
         catch (IndexOutOfBoundsException e)
@@ -77,11 +102,64 @@ public class SimpleTokenParser implements TokenParser
             throw createParseError("Index out of bounds", index, tokens);
         }
 
-        // TODO: Fix this
-        if (queries.size() == 1)
-            return queries.get(0);
-        else
-            return null; //Something went wrong, fix this
+        return parseQueryList(queries);
+    }
+    
+    protected Queryable parseQueryList(ArrayList<Object> queries)
+    {
+        // The way we turn our parenthesized objects in a a query
+        // For example the list: (, a, or, (, b, or, c, ), ),
+        // We push things onto a stack until we hit a right paren.
+        // Then we pop them until we hit the left. That becomes a 
+        // new list which is then converted to a double query and stuck back on the stack
+        // So we hit the first right, our new list is (, b, or, c, ),
+        // which becomes DoubleQuery(b, c, or)
+        // Our stack is then (, a, or, DoubleQuery(b, c, or), ),
+        // Which when we hit the right paren, becomes our list so we have
+        // DoubleQuery(a, DoubleQuery(b, c, or), or), which is correct
+        // In the case where we have more than two queries in our list, like
+        // (, a, or, b, or, c, ),
+        // while the list has more than one query we grab the first two and
+        // replace them with a double query and so on
+        Stack<Object> stack = new Stack<Object>();
+        
+        stack.push(queries.get(0)); //Stick the first paren on the stack
+        int index = 1;
+        
+        // Loop until we hit a right paren
+        System.out.println("Original: " + queries);
+        while (index < queries.size() && !(queries.get(index) instanceof Token && ((Token)queries.get(index)).getType() == Token.PAREN_END))
+        {
+            stack.push(queries.get(index));
+            index++;
+        }
+        Stack<Object> subStack = new Stack<Object>();
+        System.out.println("Stack: " + stack);
+        while (!(stack.peek() instanceof Token && ((Token)stack.peek()).getType() == Token.PAREN_START))
+            subStack.add(stack.pop());
+        stack.pop(); //remove the paren start
+        System.out.println("List: " + subStack);
+        
+        // We now know our list is structured like < a, op, b, op, c, op, ...>
+        if (subStack.size() == 1)
+            return (Queryable) subStack.get(0); // Single Query
+        else if (subStack.size() % 2 != 1)
+            throw new IllegalStateException();
+
+        Query q1 = (Query) subStack.pop();
+        QueryOperator qOp = (QueryOperator) subStack.pop();
+        Query q2 = (Query) subStack.pop();
+        DoubleQuery query = new DoubleQuery(q1, q2, qOp);
+        
+        while (!subStack.isEmpty())
+        {
+            qOp = (QueryOperator) subStack.pop();
+            q2 = (Query) subStack.pop();
+            query = new DoubleQuery(query, q2, qOp);
+        }
+        
+        return query;
+        
     }
 
     /**
@@ -141,6 +219,7 @@ public class SimpleTokenParser implements TokenParser
 
             // We made it!
             Query query = new Query(new Field(fieldName, fieldValue), fieldOp);
+            
             return query;
         }
         catch (IndexOutOfBoundsException e)
@@ -154,6 +233,11 @@ public class SimpleTokenParser implements TokenParser
         if (tokens.get(index).getType() != tokenType)
             throw createParseError("Expected " + Token.getTypeName(tokenType), index, tokens);
         return true;
+    }
+    
+    protected boolean tokenFound(int tokenType, int index, ArrayList<Token> tokens) throws ParsingException 
+    {
+        return tokens.get(index).getType() == tokenType;
     }
 
     protected ParsingException createParseError(String string, int index, ArrayList<Token> tokens)

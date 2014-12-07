@@ -16,7 +16,7 @@ public class SimpleTokenizerTest
     public void testSingleTermParse()
     {
         String string = "\"Term\"";
-        Tokenizer tokenizer = new SimpleTokenizer();
+        Tokenizer tokenizer = getTokenizer();
         ArrayList<Token> tokens = tokenizer.tokenize(string);
         
         assertEquals("Term", tokens.get(0).getString());
@@ -27,7 +27,7 @@ public class SimpleTokenizerTest
     public void testDoubleTermParse()
     {
         String string = "\"Term\", \"Term2\"";
-        Tokenizer tokenizer = new SimpleTokenizer();
+        Tokenizer tokenizer = getTokenizer();
         ArrayList<Token> tokens = tokenizer.tokenize(string);
         
         assertEquals("Term", tokens.get(0).getString());
@@ -41,7 +41,7 @@ public class SimpleTokenizerTest
     public void testDoubleTermWithGarbageParse()
     {
         String string = "agf\"Term\", asdf\"Term2\"asdf";
-        Tokenizer tokenizer = new SimpleTokenizer();
+        Tokenizer tokenizer = getTokenizer();
         ArrayList<Token> tokens = tokenizer.tokenize(string);
         
         assertEquals("Term", tokens.get(0).getString());
@@ -55,7 +55,7 @@ public class SimpleTokenizerTest
     public void testDoubleTermSurroundedByFieldParse()
     {
         String string = "{\"Term\", \"Term2\"}";
-        Tokenizer tokenizer = new SimpleTokenizer();
+        Tokenizer tokenizer = getTokenizer();
         ArrayList<Token> tokens = tokenizer.tokenize(string);
 
         assertEquals("{", tokens.get(0).getString());
@@ -75,7 +75,7 @@ public class SimpleTokenizerTest
     public void testDoubleTermSurroundedByFieldWithGarbageParse()
     {
         String string = "{sadfh\"Term\"gasd,gasdg\"Term2\"sadfasd}";
-        Tokenizer tokenizer = new SimpleTokenizer();
+        Tokenizer tokenizer = getTokenizer();
         ArrayList<Token> tokens = tokenizer.tokenize(string);
 
         assertEquals("{", tokens.get(0).getString());
@@ -95,7 +95,7 @@ public class SimpleTokenizerTest
     public void testDoubleTermSurroundedByFieldWithOperatorParse()
     {
         String string = "operator{\"Term\", \"Term2\"}";
-        Tokenizer tokenizer = new SimpleTokenizer();
+        Tokenizer tokenizer = getTokenizer();
         ArrayList<Token> tokens = tokenizer.tokenize(string);
 
         assertEquals("operator", tokens.get(0).getString());
@@ -118,7 +118,7 @@ public class SimpleTokenizerTest
     public void testDoubleTermSurroundedByFieldWithOperatorAndWhitespaceParse()
     {
         String string = " operator {\"Term\", \"Term2\"}";
-        Tokenizer tokenizer = new SimpleTokenizer();
+        Tokenizer tokenizer = getTokenizer();
         ArrayList<Token> tokens = tokenizer.tokenize(string);
 
         assertEquals("operator", tokens.get(0).getString());
@@ -141,7 +141,7 @@ public class SimpleTokenizerTest
     public void testDoubleTermSurroundedByFieldWithOperatorAndWhitespaceAndQueryParse()
     {
         String string = "[ operator { \"Term\", \"Term2\" } ]";
-        Tokenizer tokenizer = new SimpleTokenizer();
+        Tokenizer tokenizer = getTokenizer();
         ArrayList<Token> tokens = tokenizer.tokenize(string);
 
         assertEquals("[", tokens.get(0).getString());
@@ -211,7 +211,7 @@ public class SimpleTokenizerTest
     public void testOperatorBetweenQueryParse()
     {
         String string = "[] and []";
-        Tokenizer tokenizer = new SimpleTokenizer();
+        Tokenizer tokenizer = getTokenizer();
         ArrayList<Token> tokens = tokenizer.tokenize(string);
 
         assertEquals("[", tokens.get(0).getString());
@@ -229,6 +229,11 @@ public class SimpleTokenizerTest
         assertEquals("]", tokens.get(4).getString());
         assertEquals(Token.QUERY_END, tokens.get(4).getType());
     }
+
     
-    
+    // Factory method pattern
+    protected Tokenizer getTokenizer()
+    {
+        return new SimpleTokenizer();
+    }
 }

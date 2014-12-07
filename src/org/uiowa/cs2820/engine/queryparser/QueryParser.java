@@ -4,9 +4,8 @@ import java.util.ArrayList;
 
 import org.uiowa.cs2820.engine.queries.Queryable;
 
-public class QueryParser
+public abstract class QueryParser
 {
-
     private Tokenizer tokenizer;
     private TokenParser tokenParser;
     
