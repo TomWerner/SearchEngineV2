@@ -7,15 +7,16 @@ import java.util.HashSet;
 
 import org.junit.Test;
 import org.uiowa.cs2820.engine.queryparser.Token;
+import org.uiowa.cs2820.engine.queryparser.SimpleTokenizer;
 import org.uiowa.cs2820.engine.queryparser.Tokenizer;
 
-public class TokenizerTest
+public class SimpleTokenizerTest
 {
     @Test
     public void testSingleTermParse()
     {
         String string = "\"Term\"";
-        Tokenizer tokenizer = new Tokenizer();
+        Tokenizer tokenizer = new SimpleTokenizer();
         ArrayList<Token> tokens = tokenizer.tokenize(string);
         
         assertEquals("Term", tokens.get(0).getString());
@@ -26,7 +27,7 @@ public class TokenizerTest
     public void testDoubleTermParse()
     {
         String string = "\"Term\", \"Term2\"";
-        Tokenizer tokenizer = new Tokenizer();
+        Tokenizer tokenizer = new SimpleTokenizer();
         ArrayList<Token> tokens = tokenizer.tokenize(string);
         
         assertEquals("Term", tokens.get(0).getString());
@@ -40,7 +41,7 @@ public class TokenizerTest
     public void testDoubleTermWithGarbageParse()
     {
         String string = "agf\"Term\", asdf\"Term2\"asdf";
-        Tokenizer tokenizer = new Tokenizer();
+        Tokenizer tokenizer = new SimpleTokenizer();
         ArrayList<Token> tokens = tokenizer.tokenize(string);
         
         assertEquals("Term", tokens.get(0).getString());
@@ -54,7 +55,7 @@ public class TokenizerTest
     public void testDoubleTermSurroundedByFieldParse()
     {
         String string = "{\"Term\", \"Term2\"}";
-        Tokenizer tokenizer = new Tokenizer();
+        Tokenizer tokenizer = new SimpleTokenizer();
         ArrayList<Token> tokens = tokenizer.tokenize(string);
 
         assertEquals("{", tokens.get(0).getString());
@@ -74,7 +75,7 @@ public class TokenizerTest
     public void testDoubleTermSurroundedByFieldWithGarbageParse()
     {
         String string = "{sadfh\"Term\"gasd,gasdg\"Term2\"sadfasd}";
-        Tokenizer tokenizer = new Tokenizer();
+        Tokenizer tokenizer = new SimpleTokenizer();
         ArrayList<Token> tokens = tokenizer.tokenize(string);
 
         assertEquals("{", tokens.get(0).getString());
@@ -94,7 +95,7 @@ public class TokenizerTest
     public void testDoubleTermSurroundedByFieldWithOperatorParse()
     {
         String string = "operator{\"Term\", \"Term2\"}";
-        Tokenizer tokenizer = new Tokenizer();
+        Tokenizer tokenizer = new SimpleTokenizer();
         ArrayList<Token> tokens = tokenizer.tokenize(string);
 
         assertEquals("operator", tokens.get(0).getString());
@@ -117,7 +118,7 @@ public class TokenizerTest
     public void testDoubleTermSurroundedByFieldWithOperatorAndWhitespaceParse()
     {
         String string = " operator {\"Term\", \"Term2\"}";
-        Tokenizer tokenizer = new Tokenizer();
+        Tokenizer tokenizer = new SimpleTokenizer();
         ArrayList<Token> tokens = tokenizer.tokenize(string);
 
         assertEquals("operator", tokens.get(0).getString());
@@ -140,7 +141,7 @@ public class TokenizerTest
     public void testDoubleTermSurroundedByFieldWithOperatorAndWhitespaceAndQueryParse()
     {
         String string = "[ operator { \"Term\", \"Term2\" } ]";
-        Tokenizer tokenizer = new Tokenizer();
+        Tokenizer tokenizer = new SimpleTokenizer();
         ArrayList<Token> tokens = tokenizer.tokenize(string);
 
         assertEquals("[", tokens.get(0).getString());
@@ -181,7 +182,7 @@ public class TokenizerTest
         whitespace.add('d');
         whitespace.add('f');
         whitespace.add('r');
-        Tokenizer tokenizer = new Tokenizer('\'', '(', ')', '{', '}', whitespace);
+        Tokenizer tokenizer = new SimpleTokenizer('\'', '(', ')', '{', '}', whitespace);
         ArrayList<Token> tokens = tokenizer.tokenize(string);
 
         assertEquals("{", tokens.get(0).getString());
@@ -210,7 +211,7 @@ public class TokenizerTest
     public void testOperatorBetweenQueryParse()
     {
         String string = "[] and []";
-        Tokenizer tokenizer = new Tokenizer();
+        Tokenizer tokenizer = new SimpleTokenizer();
         ArrayList<Token> tokens = tokenizer.tokenize(string);
 
         assertEquals("[", tokens.get(0).getString());
