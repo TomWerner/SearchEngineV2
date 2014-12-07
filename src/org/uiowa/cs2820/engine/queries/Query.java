@@ -24,5 +24,8 @@ public class Query implements Queryable
         return operator;
     }
     
-    
+    public String toString()
+    {
+        return operator.toString() + field.toString();
+    }
 }

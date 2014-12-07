@@ -4,7 +4,7 @@ public class OperatorFactory
 {
     public static FieldOperator getFieldOperator(String operator)
     {
-        if (operator.equals("equals") || operator.equals("equal"))
+        if (operator.equalsIgnoreCase("equals") || operator.equalsIgnoreCase("equal"))
             return new FieldEquals();
         
         return null;
@@ -12,7 +12,11 @@ public class OperatorFactory
 
     public static QueryOperator getQueryOperator(String operator)
     {
-        // TODO Auto-generated method stub
+        if (operator.equalsIgnoreCase("or"))
+            return new QueryOr();
+        else if (operator.equalsIgnoreCase("and"))
+            return new QueryAnd();
+        
         return null;
     }
 }

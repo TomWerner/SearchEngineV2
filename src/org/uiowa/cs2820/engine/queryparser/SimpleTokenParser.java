@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.uiowa.cs2820.engine.Field;
 import org.uiowa.cs2820.engine.queries.FieldEquals;
 import org.uiowa.cs2820.engine.queries.FieldOperator;
-import org.uiowa.cs2820.engine.queries.MockMultipleQuery;
+import org.uiowa.cs2820.engine.queries.MockDoubleQuery;
 import org.uiowa.cs2820.engine.queries.OperatorFactory;
 import org.uiowa.cs2820.engine.queries.Query;
 import org.uiowa.cs2820.engine.queries.QueryOperator;
@@ -24,7 +24,7 @@ public class SimpleTokenParser implements TokenParser
     @Override
     public Queryable parseTokens(ArrayList<Token> tokens) throws ParsingException
     {
-        ArrayList<Query> queries = new ArrayList<Query>();
+        ArrayList<Queryable> queries = new ArrayList<Queryable>();
 
         int index = 0;
         try
@@ -51,8 +51,7 @@ public class SimpleTokenParser implements TokenParser
                     index++;
 
                     // Check to see if there is a specified query
-                    QueryOperator queryOp = new QueryOr(); // TODO: Do something
-                                                           // with this
+                    QueryOperator queryOp = new QueryOr();
                     if (tokens.get(index).getType() == Token.QUERY_OPERATOR)
                     {
                         queryOp = OperatorFactory.getQueryOperator(tokens.get(index).getString());
@@ -64,7 +63,7 @@ public class SimpleTokenParser implements TokenParser
                     endPosition = findNextInstance(Token.QUERY_END, tokens, index + 1);
                     query = parseSingleQuery(index + 1, endPosition - 1, tokens);
                     index = endPosition;
-                    queries.add(query);
+                    queries.set(0, new MockDoubleQuery(queries.get(0), query, queryOp));
                 }
             }
         }
@@ -78,7 +77,7 @@ public class SimpleTokenParser implements TokenParser
         if (queries.size() == 1)
             return queries.get(0);
         else
-            return new MockMultipleQuery(queries);
+            return null; //Something went wrong, fix this
     }
 
     /**
