@@ -36,8 +36,11 @@ public class DoubleQuery implements Queryable
     {
         if (other instanceof DoubleQuery)
         {
-            return query1.equals(((DoubleQuery) other).query1) && query2.equals(((DoubleQuery) other).query2)
-                    && operator.getClass().equals(((DoubleQuery) other).operator.getClass());
+            boolean q1Match = query1.equals(((DoubleQuery) other).query1);
+            boolean q2Match = query2.equals(((DoubleQuery) other).query2);
+            boolean opMatch = operator.getClass().equals(((DoubleQuery) other).operator.getClass());
+            
+            return q1Match && q2Match && opMatch;
         }
         return false;
     }

@@ -33,7 +33,7 @@ public class Query implements Queryable
     {
         if (other instanceof Query)
         {
-            return field.equals(((Query) other).field) && operator.getClass().equals(other.getClass());
+            return field.equals(((Query) other).field) && operator.getClass().equals(((Query)other).operator.getClass());
         }
         return false;
     }
