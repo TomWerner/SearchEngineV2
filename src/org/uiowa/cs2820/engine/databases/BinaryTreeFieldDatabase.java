@@ -241,7 +241,7 @@ public class BinaryTreeFieldDatabase extends FieldDatabase
     }
 
     @Override
-    public Iterator<Field> iterator()
+    public Iterator<FieldFileNode> iterator()
     {
         return new BinaryTreeIterator(this, 0);
     }

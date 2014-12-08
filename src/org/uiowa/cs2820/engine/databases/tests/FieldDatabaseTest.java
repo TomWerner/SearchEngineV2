@@ -303,7 +303,7 @@ public abstract class FieldDatabaseTest
         database.removeElement(0);
         assertEquals(null, database.getElementAt(0));
         
-        Iterator<Field> iterator = database.iterator();
+        Iterator<FieldFileNode> iterator = database.iterator();
         assertFalse(iterator.hasNext());
     }
 
@@ -319,9 +319,9 @@ public abstract class FieldDatabaseTest
         database.removeElement(0);
         assertEquals(new FieldFileNode(new Field("b", "a"), 0), database.getElementAt(0));
         
-        Iterator<Field> iterator = database.iterator();
+        Iterator<FieldFileNode> iterator = database.iterator();
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("b", "a"), iterator.next());
+        assertEquals(new Field("b", "a"), iterator.next().getField());
         assertFalse(iterator.hasNext());
     }
 
@@ -342,11 +342,11 @@ public abstract class FieldDatabaseTest
         assertEquals(new FieldFileNode(new Field("a", "a"), 0), root);
         assertEquals(new FieldFileNode(new Field("c", "a"), 0), database.getElementAt(root.getRightPosition()));
         
-        Iterator<Field> iterator = database.iterator();
+        Iterator<FieldFileNode> iterator = database.iterator();
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("a", "a"), iterator.next());
+        assertEquals(new Field("a", "a"), iterator.next().getField());
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("c", "a"), iterator.next());
+        assertEquals(new Field("c", "a"), iterator.next().getField());
         assertFalse(iterator.hasNext());
     }
 
@@ -360,9 +360,9 @@ public abstract class FieldDatabaseTest
         database.removeElement(1);
         assertEquals(new FieldFileNode(new Field("a", "a"), 0), database.getElementAt(0));
         
-        Iterator<Field> iterator = database.iterator();
+        Iterator<FieldFileNode> iterator = database.iterator();
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("a", "a"), iterator.next());
+        assertEquals(new Field("a", "a"), iterator.next().getField());
         assertFalse(iterator.hasNext());
     }
 
@@ -381,11 +381,11 @@ public abstract class FieldDatabaseTest
         assertEquals(new FieldFileNode(new Field("m", "a"), 0), root);
         assertEquals(new FieldFileNode(new Field("n", "a"), 0), database.getElementAt(root.getRightPosition()));
         
-        Iterator<Field> iterator = database.iterator();
+        Iterator<FieldFileNode> iterator = database.iterator();
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("m", "a"), iterator.next());
+        assertEquals(new Field("m", "a"), iterator.next().getField());
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("n", "a"), iterator.next());
+        assertEquals(new Field("n", "a"), iterator.next().getField());
         assertFalse(iterator.hasNext());
     }
     
@@ -404,11 +404,11 @@ public abstract class FieldDatabaseTest
         assertEquals(new FieldFileNode(new Field("m", "a"), 0), root);
         assertEquals(new FieldFileNode(new Field("l", "a"), 0), database.getElementAt(root.getLeftPosition()));
         
-        Iterator<Field> iterator = database.iterator();
+        Iterator<FieldFileNode> iterator = database.iterator();
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("l", "a"), iterator.next());
+        assertEquals(new Field("l", "a"), iterator.next().getField());
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("m", "a"), iterator.next());
+        assertEquals(new Field("m", "a"), iterator.next().getField());
         assertFalse(iterator.hasNext());
     }
 
@@ -429,11 +429,11 @@ public abstract class FieldDatabaseTest
         assertEquals(new FieldFileNode(new Field("n", "a"), 0), root);
         assertEquals(new FieldFileNode(new Field("l", "a"), 0), database.getElementAt(root.getLeftPosition()));
         
-        Iterator<Field> iterator = database.iterator();
+        Iterator<FieldFileNode> iterator = database.iterator();
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("l", "a"), iterator.next());
+        assertEquals(new Field("l", "a"), iterator.next().getField());
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("n", "a"), iterator.next());
+        assertEquals(new Field("n", "a"), iterator.next().getField());
         assertFalse(iterator.hasNext());
     }
 
@@ -466,23 +466,23 @@ public abstract class FieldDatabaseTest
         assertEquals(new FieldFileNode(new Field("a", 21), 0), database.getElementAt(7));
         assertEquals(new FieldFileNode(new Field("a", 25), 0), database.getElementAt(8));
         
-        Iterator<Field> iterator = database.iterator();
+        Iterator<FieldFileNode> iterator = database.iterator();
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("a", -4), iterator.next());
+        assertEquals(new Field("a", -4), iterator.next().getField());
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("a", 2), iterator.next());
+        assertEquals(new Field("a", 2), iterator.next().getField());
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("a", 3), iterator.next());
+        assertEquals(new Field("a", 3), iterator.next().getField());
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("a", 5), iterator.next());
+        assertEquals(new Field("a", 5), iterator.next().getField());
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("a", 9), iterator.next());
+        assertEquals(new Field("a", 9), iterator.next().getField());
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("a", 19), iterator.next());
+        assertEquals(new Field("a", 19), iterator.next().getField());
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("a", 21), iterator.next());
+        assertEquals(new Field("a", 21), iterator.next().getField());
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("a", 25), iterator.next());
+        assertEquals(new Field("a", 25), iterator.next().getField());
         assertFalse(iterator.hasNext());
     }
 }

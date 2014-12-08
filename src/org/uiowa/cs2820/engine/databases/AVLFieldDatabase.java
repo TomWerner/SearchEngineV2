@@ -2,7 +2,6 @@ package org.uiowa.cs2820.engine.databases;
 
 import java.util.Iterator;
 
-import org.uiowa.cs2820.engine.Field;
 import org.uiowa.cs2820.engine.fileoperations.ChunkedAccess;
 
 public class AVLFieldDatabase extends BinaryTreeFieldDatabase
@@ -244,7 +243,7 @@ public class AVLFieldDatabase extends BinaryTreeFieldDatabase
     }
 
     @Override
-    public Iterator<Field> iterator()
+    public Iterator<FieldFileNode> iterator()
     {
         return new BinaryTreeIterator(this, 0);
     }

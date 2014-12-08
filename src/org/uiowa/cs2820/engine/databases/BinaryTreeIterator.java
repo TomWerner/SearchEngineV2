@@ -3,9 +3,7 @@ package org.uiowa.cs2820.engine.databases;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import org.uiowa.cs2820.engine.Field;
-
-public class BinaryTreeIterator implements Iterator<Field>
+public class BinaryTreeIterator implements Iterator<FieldFileNode>
 {
     private FieldDatabase database;
     private int lastReturned = -1;
@@ -27,7 +25,7 @@ public class BinaryTreeIterator implements Iterator<Field>
     }
 
     @Override
-    public Field next()
+    public FieldFileNode next()
     {
         if (!hasNext())
             throw new NoSuchElementException();
@@ -53,7 +51,7 @@ public class BinaryTreeIterator implements Iterator<Field>
                 {
                     nextPointer = FieldFileNode.NULL_ADDRESS;
                     lastReturned = originalNext.getAddress();
-                    return originalNext.getField();
+                    return originalNext;
                 }
 
                 if (((FieldFileNode) database.getElementAt(next.getParentPosition())).getLeftPosition() == nextPointer)
@@ -61,14 +59,14 @@ public class BinaryTreeIterator implements Iterator<Field>
                     nextPointer = next.getParentPosition();
                     next = (FieldFileNode) database.getElementAt(next.getParentPosition());
                     lastReturned = originalNext.getAddress();
-                    return originalNext.getField();
+                    return originalNext;
                 }
                 nextPointer = next.getParentPosition();
                 next = (FieldFileNode) database.getElementAt(next.getParentPosition());
             }
         }
         lastReturned = originalNext.getAddress();
-        return originalNext.getField();
+        return originalNext;
     }
 
     @Override
@@ -86,7 +84,7 @@ public class BinaryTreeIterator implements Iterator<Field>
         resetIterator(initialRootPosition);
         while (hasNext())
         {
-            if (next().compareTo(node.getField()) >= 0)
+            if (next().compareTo(node) >= 0)
             {
                 nextPointer = lastReturned;
                 break;

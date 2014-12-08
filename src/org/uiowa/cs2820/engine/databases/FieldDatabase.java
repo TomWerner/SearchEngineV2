@@ -4,7 +4,7 @@ import org.uiowa.cs2820.engine.Field;
 import org.uiowa.cs2820.engine.fileoperations.ChunkedAccess;
 
 
-public abstract class FieldDatabase implements Iterable<Field>
+public abstract class FieldDatabase implements Iterable<FieldFileNode>
 {
     protected ChunkedAccess fileHandle;
 

@@ -23,10 +23,10 @@ public class BinaryTreeIteratorTest
         FieldDatabase database = getDatabase();
 
         database.add(new FieldFileNode(new Field("z", "a"), 0));
-        Iterator<Field> iterator = database.iterator();
+        Iterator<FieldFileNode> iterator = database.iterator();
 
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("z", "a"), iterator.next());
+        assertEquals(new Field("z", "a"), iterator.next().getField());
 
         assertFalse(iterator.hasNext());
     }
@@ -38,12 +38,12 @@ public class BinaryTreeIteratorTest
 
         database.add(new FieldFileNode(new Field("m", "a"), 0));
         database.add(new FieldFileNode(new Field("n", "a"), 0));
-        Iterator<Field> iterator = database.iterator();
+        Iterator<FieldFileNode> iterator = database.iterator();
 
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("m", "a"), iterator.next());
+        assertEquals(new Field("m", "a"), iterator.next().getField());
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("n", "a"), iterator.next());
+        assertEquals(new Field("n", "a"), iterator.next().getField());
 
         assertFalse(iterator.hasNext());
     }
@@ -55,12 +55,12 @@ public class BinaryTreeIteratorTest
 
         database.add(new FieldFileNode(new Field("m", "a"), 0));
         database.add(new FieldFileNode(new Field("l", "a"), 0));
-        Iterator<Field> iterator = database.iterator();
+        Iterator<FieldFileNode> iterator = database.iterator();
 
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("l", "a"), iterator.next());
+        assertEquals(new Field("l", "a"), iterator.next().getField());
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("m", "a"), iterator.next());
+        assertEquals(new Field("m", "a"), iterator.next().getField());
 
         assertFalse(iterator.hasNext());
     }
@@ -76,25 +76,25 @@ public class BinaryTreeIteratorTest
         database.add(new FieldFileNode(new Field("d", "a"), 0));
         database.add(new FieldFileNode(new Field("e", "a"), 0));
         database.add(new FieldFileNode(new Field("f", "a"), 0));
-        Iterator<Field> iterator = database.iterator();
+        Iterator<FieldFileNode> iterator = database.iterator();
 
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("a", "a"), iterator.next());
+        assertEquals(new Field("a", "a"), iterator.next().getField());
 
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("b", "a"), iterator.next());
+        assertEquals(new Field("b", "a"), iterator.next().getField());
 
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("c", "a"), iterator.next());
+        assertEquals(new Field("c", "a"), iterator.next().getField());
 
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("d", "a"), iterator.next());
+        assertEquals(new Field("d", "a"), iterator.next().getField());
 
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("e", "a"), iterator.next());
+        assertEquals(new Field("e", "a"), iterator.next().getField());
 
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("f", "a"), iterator.next());
+        assertEquals(new Field("f", "a"), iterator.next().getField());
 
         assertFalse(iterator.hasNext());
     }
@@ -110,25 +110,25 @@ public class BinaryTreeIteratorTest
         database.add(new FieldFileNode(new Field("f", "a"), 0));
         database.add(new FieldFileNode(new Field("d", "a"), 0));
         database.add(new FieldFileNode(new Field("b", "a"), 0));
-        Iterator<Field> iterator = database.iterator();
+        Iterator<FieldFileNode> iterator = database.iterator();
 
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("a", "a"), iterator.next());
+        assertEquals(new Field("a", "a"), iterator.next().getField());
 
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("b", "a"), iterator.next());
+        assertEquals(new Field("b", "a"), iterator.next().getField());
 
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("c", "a"), iterator.next());
+        assertEquals(new Field("c", "a"), iterator.next().getField());
 
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("d", "a"), iterator.next());
+        assertEquals(new Field("d", "a"), iterator.next().getField());
 
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("e", "a"), iterator.next());
+        assertEquals(new Field("e", "a"), iterator.next().getField());
 
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("f", "a"), iterator.next());
+        assertEquals(new Field("f", "a"), iterator.next().getField());
 
         assertFalse(iterator.hasNext());
     }
@@ -144,25 +144,25 @@ public class BinaryTreeIteratorTest
         database.add(new FieldFileNode(new Field("c", "a"), 0));
         database.add(new FieldFileNode(new Field("b", "a"), 0));
         database.add(new FieldFileNode(new Field("a", "a"), 0));
-        Iterator<Field> iterator = database.iterator();
+        Iterator<FieldFileNode> iterator = database.iterator();
 
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("a", "a"), iterator.next());
+        assertEquals(new Field("a", "a"), iterator.next().getField());
 
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("b", "a"), iterator.next());
+        assertEquals(new Field("b", "a"), iterator.next().getField());
 
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("c", "a"), iterator.next());
+        assertEquals(new Field("c", "a"), iterator.next().getField());
 
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("d", "a"), iterator.next());
+        assertEquals(new Field("d", "a"), iterator.next().getField());
 
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("e", "a"), iterator.next());
+        assertEquals(new Field("e", "a"), iterator.next().getField());
 
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("f", "a"), iterator.next());
+        assertEquals(new Field("f", "a"), iterator.next().getField());
 
         assertFalse(iterator.hasNext());
     }
@@ -178,29 +178,29 @@ public class BinaryTreeIteratorTest
         database.add(new FieldFileNode(new Field("c", "a"), 0));
         database.add(new FieldFileNode(new Field("b", "a"), 0));
         database.add(new FieldFileNode(new Field("a", "a"), 0));
-        Iterator<Field> iterator = database.iterator();
+        Iterator<FieldFileNode> iterator = database.iterator();
 
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("a", "a"), iterator.next());
+        assertEquals(new Field("a", "a"), iterator.next().getField());
 
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("b", "a"), iterator.next());
+        assertEquals(new Field("b", "a"), iterator.next().getField());
 
         iterator.remove();
         // Check that its gone
         assertEquals(-1, database.getIdentifierPosition(new Field("b", "a")));
 
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("c", "a"), iterator.next());
+        assertEquals(new Field("c", "a"), iterator.next().getField());
 
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("d", "a"), iterator.next());
+        assertEquals(new Field("d", "a"), iterator.next().getField());
 
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("e", "a"), iterator.next());
+        assertEquals(new Field("e", "a"), iterator.next().getField());
 
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("f", "a"), iterator.next());
+        assertEquals(new Field("f", "a"), iterator.next().getField());
 
         assertFalse(iterator.hasNext());
     }
@@ -216,25 +216,25 @@ public class BinaryTreeIteratorTest
         database.add(new FieldFileNode(new Field("c", "a"), 0));
         database.add(new FieldFileNode(new Field("b", "a"), 0));
         database.add(new FieldFileNode(new Field("a", "a"), 0));
-        Iterator<Field> iterator = database.iterator();
+        Iterator<FieldFileNode> iterator = database.iterator();
 
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("a", "a"), iterator.next());
+        assertEquals(new Field("a", "a"), iterator.next().getField());
 
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("b", "a"), iterator.next());
+        assertEquals(new Field("b", "a"), iterator.next().getField());
 
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("c", "a"), iterator.next());
+        assertEquals(new Field("c", "a"), iterator.next().getField());
 
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("d", "a"), iterator.next());
+        assertEquals(new Field("d", "a"), iterator.next().getField());
 
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("e", "a"), iterator.next());
+        assertEquals(new Field("e", "a"), iterator.next().getField());
 
         assertTrue(iterator.hasNext());
-        assertEquals(new Field("f", "a"), iterator.next());
+        assertEquals(new Field("f", "a"), iterator.next().getField());
 
         assertFalse(iterator.hasNext());
         
@@ -260,13 +260,13 @@ public class BinaryTreeIteratorTest
         }
         Collections.sort(mockDatabase);
 
-        Iterator<Field> dbIter = database.iterator();
+        Iterator<FieldFileNode> dbIter = database.iterator();
         Iterator<Field> mockDbIter = mockDatabase.iterator();
 
         int counter = 0;
         while (dbIter.hasNext() && mockDbIter.hasNext())
         {
-            int num = (Integer) dbIter.next().getFieldValue();
+            int num = (Integer) dbIter.next().getField().getFieldValue();
             assertEquals(counter, num);
             assertEquals(counter, mockDbIter.next().getFieldValue());
             dbIter.remove();
@@ -282,7 +282,7 @@ public class BinaryTreeIteratorTest
     public void testIllegalRemoveThrowsError()
     {
         FieldDatabase database = getDatabase();
-        Iterator<Field> iter = database.iterator();
+        Iterator<FieldFileNode> iter = database.iterator();
         iter.remove();
     }
 

@@ -111,7 +111,7 @@ public class HashmapFieldDatabase extends FieldDatabase
     }
 
     @Override
-    public Iterator<Field> iterator()
+    public Iterator<FieldFileNode> iterator()
     {
         return null;
     }
