@@ -1,5 +1,6 @@
 Broad Tasks:
 	Query parsing - Tom
+	MP3 indexing - Tom
 	RESTful interface - Cale
 	Multiple search types - Chris
 	Combining queries - Joe
@@ -34,4 +35,11 @@ Query Parsing plan:
 	Possible improvements:
 		Make the Tokenizer more modular, stop hardcoding the values of the tokens
 		Allow loading a settings file for the parsing
+	Final product:
+		Uses an implementation of the Tokenizer and TokenParser interfaces to parse
+		a string into a query. It can handle parenthesized queries and uses a combination
+		of DoubleQuery's and Query's to construct a final Queryable. 
+		The tests check the different combinations of tokens and parenthesis.
+		For the simple parser the characters can be changed, for the complex they're set.
 		
+ 
