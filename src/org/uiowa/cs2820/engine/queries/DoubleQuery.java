@@ -1,5 +1,7 @@
 package org.uiowa.cs2820.engine.queries;
 
+import org.uiowa.cs2820.engine.Field;
+
 public class DoubleQuery implements Queryable
 {
     private Queryable query1, query2;
@@ -44,4 +46,12 @@ public class DoubleQuery implements Queryable
         }
         return false;
     }
+
+    @Override
+    public boolean isSatisfiedBy(Field testField)
+    {
+        return operator.isSatisfiedBy(query1.isSatisfiedBy(testField), query2.isSatisfiedBy(testField));
+    }
+    
+    
 }

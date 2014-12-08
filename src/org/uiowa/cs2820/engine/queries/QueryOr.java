@@ -6,4 +6,11 @@ public class QueryOr implements QueryOperator
     {
         return "or";
     }
+
+    @Override
+    public boolean isSatisfiedBy(boolean operand1, boolean operand2)
+    {
+        return operand1 || operand2;
+    }
+    
 }

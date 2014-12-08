@@ -14,6 +14,14 @@ public class Query implements Queryable
         this.operator = fieldOp;
     }
 
+    @Override
+    public boolean isSatisfiedBy(Field testField)
+    {
+        return operator.isSatisfiedBy(field, testField);
+    }
+
+
+
     public Field getField()
     {
         return field;

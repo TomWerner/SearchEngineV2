@@ -2,6 +2,7 @@ package org.uiowa.cs2820.engine;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.uiowa.cs2820.engine.databases.AVLFieldDatabase;
 import org.uiowa.cs2820.engine.databases.FieldDatabase;
@@ -9,6 +10,8 @@ import org.uiowa.cs2820.engine.databases.FieldFileNode;
 import org.uiowa.cs2820.engine.databases.IdentifierDatabase;
 import org.uiowa.cs2820.engine.databases.ValueFileNode;
 import org.uiowa.cs2820.engine.fileoperations.RAFile;
+import org.uiowa.cs2820.engine.queries.FieldIdentifierPair;
+import org.uiowa.cs2820.engine.queries.Queryable;
 
 /**
  * This class combines the FieldDatabase and IdentiferDatabase to implement the
@@ -88,9 +91,25 @@ public class IntegratedFileDatabase implements Database
         }
     }
     
+    public ArrayList<FieldIdentifierPair> matchQuery(Queryable queryable)
+    {
+        ArrayList<FieldIdentifierPair> result = new ArrayList<FieldIdentifierPair>();
+        
+        Iterator<FieldFileNode> iter = fieldDB.iterator();
+        while (iter.hasNext())
+        {
+            FieldFileNode node = iter.next();
+            if (queryable.isSatisfiedBy(node.getField()))
+                for (String identifier : identDB.getAllIdentifiers(node.getHeadOfLinkedListPosition()))
+                    result.add(new FieldIdentifierPair(node.getField(), identifier));
+        }
+        
+        return result;
+    }
+    
     public String toString()
     {
-        return fieldDB.toString();
+        return fieldDB.toString() + "\n\n" + identDB.toString();
     }
 
 }
