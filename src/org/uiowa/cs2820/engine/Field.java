@@ -53,7 +53,7 @@ public class Field implements Comparable<Field>
     public boolean equals(Object other)
     {
         if (other instanceof Field)
-            return ((Field)other).toString().equals(toString());
+            return ((Field)other).toString().equalsIgnoreCase(toString());
         return false;
     }
     

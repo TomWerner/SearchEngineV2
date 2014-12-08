@@ -15,16 +15,16 @@ public class IntegratedFileDatabaseTestsWithRAFile extends IntegratedFileDatabas
 {
     public FieldDatabase[] getFieldDatabases()
     {
-        ChunkedAccess avlFile = new RAFile(createTestFile("avlFile.dat"), 16, FieldFileNode.MAX_SIZE);
-        ChunkedAccess binaryTreeFile = new RAFile(createTestFile("binaryTreeFile.dat"), 16, FieldFileNode.MAX_SIZE);
-        ChunkedAccess hashMapFile = new RAFile(createTestFile("hashMapFile.dat"), 16, FieldFileNode.MAX_SIZE);
+        ChunkedAccess avlFile = new RAFile(createTestFile("data/avlFile.dat"), 16, FieldFileNode.MAX_SIZE);
+        ChunkedAccess binaryTreeFile = new RAFile(createTestFile("data/binaryTreeFile.dat"), 16, FieldFileNode.MAX_SIZE);
+        ChunkedAccess hashMapFile = new RAFile(createTestFile("data/hashMapFile.dat"), 16, FieldFileNode.MAX_SIZE);
 
         return new FieldDatabase[] { new AVLFieldDatabase(avlFile), new BinaryTreeFieldDatabase(binaryTreeFile), new HashmapFieldDatabase(hashMapFile) };
     }
 
     public IdentifierDatabase[] getIdentifierDatabases()
     {
-        ChunkedAccess identFile = new RAFile(createTestFile("identFile.dat"), 16, FieldFileNode.MAX_SIZE);
+        ChunkedAccess identFile = new RAFile(createTestFile("data/identFile.dat"), 16, FieldFileNode.MAX_SIZE);
         return new IdentifierDatabase[] { new IdentifierDatabase(identFile) };
     }
 

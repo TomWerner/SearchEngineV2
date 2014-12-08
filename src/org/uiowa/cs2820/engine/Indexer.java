@@ -2,7 +2,7 @@ package org.uiowa.cs2820.engine;
 
 public class Indexer
 {
-    private Database database;
+    protected Database database;
     private String identifier;
 
     public Indexer(Database database, String identifier)

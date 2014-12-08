@@ -120,18 +120,18 @@ public class IntegrationTests
     @Test
     public void testEmptyDatabaseRAFile(){
     	
-		File testingFile = new File("testingFile.dat");
+		File testingFile = new File("data/testingFile.dat");
 		if(testingFile.exists())
 			testingFile.delete();
 		
-		File testing = new File("testing.dat");
+		File testing = new File("data/testing.dat");
 		if(testing.exists())
 			testing.delete();
 		
 		
-        ChunkedAccess file1 = new RAFile(new File("testingFile.dat"),16, FieldFileNode.MAX_SIZE);
+        ChunkedAccess file1 = new RAFile(new File("data/testingFile.dat"),16, FieldFileNode.MAX_SIZE);
         FieldDatabase fieldDB = new BinaryTreeFieldDatabase(file1);
-        ChunkedAccess file2 = new RAFile(new File("testing.dat"), 16, FieldFileNode.MAX_SIZE);
+        ChunkedAccess file2 = new RAFile(new File("data/testing.dat"), 16, FieldFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);
         
         IntegratedFileDatabase database = new IntegratedFileDatabase(fieldDB, identDB);
@@ -149,18 +149,18 @@ public class IntegrationTests
     @Test
     public void testEmptyDatabaseRAFileHashMap(){
     	
-		File testingFile = new File("testingFile.dat");
+		File testingFile = new File("data/testingFile.dat");
 		if(testingFile.exists())
 			testingFile.delete();
 		
-		File testing = new File("testing.dat");
+		File testing = new File("data/testing.dat");
 		if(testing.exists())
 			testing.delete();
 		
 		
-        ChunkedAccess file1 = new RAFile(new File("testingFile.dat"),16, FieldFileNode.MAX_SIZE);
+        ChunkedAccess file1 = new RAFile(new File("data/testingFile.dat"),16, FieldFileNode.MAX_SIZE);
         FieldDatabase fieldDB = new HashmapFieldDatabase(file1);
-        ChunkedAccess file2 = new RAFile(new File("testing.dat"), 16, FieldFileNode.MAX_SIZE);
+        ChunkedAccess file2 = new RAFile(new File("data/testing.dat"), 16, FieldFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);
         
         IntegratedFileDatabase database = new IntegratedFileDatabase(fieldDB, identDB);
@@ -177,18 +177,18 @@ public class IntegrationTests
     
     @Test
     public void BinaryIntegrationTesting(){
-		File testingFile = new File("testingFile.dat");
+		File testingFile = new File("data/testingFile.dat");
 		if(testingFile.exists())
 			testingFile.delete();
 		
-		File testing = new File("testing.dat");
+		File testing = new File("data/testing.dat");
 		if(testing.exists())
 			testing.delete();
 		
 		
-        ChunkedAccess file1 = new RAFile(new File("testingFile.dat"),16, FieldFileNode.MAX_SIZE);
+        ChunkedAccess file1 = new RAFile(new File("data/testingFile.dat"),16, FieldFileNode.MAX_SIZE);
         FieldDatabase fieldDB = new BinaryTreeFieldDatabase(file1);
-        ChunkedAccess file2 = new RAFile(new File("testing.dat"), 16, FieldFileNode.MAX_SIZE);
+        ChunkedAccess file2 = new RAFile(new File("data/testing.dat"), 16, FieldFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);
         
         IntegratedFileDatabase database = new IntegratedFileDatabase(fieldDB, identDB);
@@ -246,18 +246,18 @@ public class IntegrationTests
     
     @Test
     public void AVLIntegrationTesting(){
-		File testingFile = new File("testingFile.dat");
+		File testingFile = new File("data/testingFile.dat");
 		if(testingFile.exists())
 			testingFile.delete();
 		
-		File testing = new File("testing.dat");
+		File testing = new File("data/testing.dat");
 		if(testing.exists())
 			testing.delete();
 		
 		
-        ChunkedAccess file1 = new RAFile(new File("testingFile.dat"),16, FieldFileNode.MAX_SIZE);
+        ChunkedAccess file1 = new RAFile(new File("data/testingFile.dat"),16, FieldFileNode.MAX_SIZE);
         FieldDatabase fieldDB = new AVLFieldDatabase(file1);
-        ChunkedAccess file2 = new RAFile(new File("testing.dat"), 16, FieldFileNode.MAX_SIZE);
+        ChunkedAccess file2 = new RAFile(new File("data/testing.dat"), 16, FieldFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);
         
         IntegratedFileDatabase database = new IntegratedFileDatabase(fieldDB, identDB);
@@ -315,18 +315,18 @@ public class IntegrationTests
     
     @Test
     public void HashmapIntegrationTesting(){
-		File testingFile = new File("testingFile.dat");
+		File testingFile = new File("data/testingFile.dat");
 		if(testingFile.exists())
 			testingFile.delete();
 		
-		File testing = new File("testing.dat");
+		File testing = new File("data/testing.dat");
 		if(testing.exists())
 			testing.delete();
 		
 		
-        ChunkedAccess file1 = new RAFile(new File("testingFile.dat"),16, FieldFileNode.MAX_SIZE);
+        ChunkedAccess file1 = new RAFile(new File("data/testingFile.dat"),16, FieldFileNode.MAX_SIZE);
         FieldDatabase fieldDB = new HashmapFieldDatabase(file1);
-        ChunkedAccess file2 = new RAFile(new File("testing.dat"), 16, FieldFileNode.MAX_SIZE);
+        ChunkedAccess file2 = new RAFile(new File("data/testing.dat"), 16, FieldFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);
         
         IntegratedFileDatabase database = new IntegratedFileDatabase(fieldDB, identDB);
@@ -385,18 +385,18 @@ public class IntegrationTests
     @Test
     public void testRemovingIdentifierBasicCaseAVL()
     {
-		File testingFile = new File("testingFile.dat");
+		File testingFile = new File("data/testingFile.dat");
 		if(testingFile.exists())
 			testingFile.delete();
 		
-		File testing = new File("testing.dat");
+		File testing = new File("data/testing.dat");
 		if(testing.exists())
 			testing.delete();
 		
 		
-        ChunkedAccess file1 = new RAFile(new File("testingFile.dat"),16, FieldFileNode.MAX_SIZE);
+        ChunkedAccess file1 = new RAFile(new File("data/testingFile.dat"),16, FieldFileNode.MAX_SIZE);
         FieldDatabase fieldDB = new AVLFieldDatabase(file1);
-        ChunkedAccess file2 = new RAFile(new File("testing.dat"), 16, FieldFileNode.MAX_SIZE);
+        ChunkedAccess file2 = new RAFile(new File("data/testing.dat"), 16, FieldFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);
         
         IntegratedFileDatabase database = new IntegratedFileDatabase(fieldDB, identDB);
@@ -421,18 +421,18 @@ public class IntegrationTests
     @Test
     public void testRemovingIdentifierBasicCaseBinary()
     {
-		File testingFile = new File("testingFile.dat");
+		File testingFile = new File("data/testingFile.dat");
 		if(testingFile.exists())
 			testingFile.delete();
 		
-		File testing = new File("testing.dat");
+		File testing = new File("data/testing.dat");
 		if(testing.exists())
 			testing.delete();
 		
 		
-        ChunkedAccess file1 = new RAFile(new File("testingFile.dat"),16, FieldFileNode.MAX_SIZE);
+        ChunkedAccess file1 = new RAFile(new File("data/testingFile.dat"),16, FieldFileNode.MAX_SIZE);
         FieldDatabase fieldDB = new BinaryTreeFieldDatabase(file1);
-        ChunkedAccess file2 = new RAFile(new File("testing.dat"), 16, FieldFileNode.MAX_SIZE);
+        ChunkedAccess file2 = new RAFile(new File("data/testing.dat"), 16, FieldFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);
         
         IntegratedFileDatabase database = new IntegratedFileDatabase(fieldDB, identDB);
@@ -457,18 +457,18 @@ public class IntegrationTests
     @Test
     public void testRemovingIdentifierBasicCaseHashmap()
     {
-		File testingFile = new File("testingFile.dat");
+		File testingFile = new File("data/testingFile.dat");
 		if(testingFile.exists())
 			testingFile.delete();
 		
-		File testing = new File("testing.dat");
+		File testing = new File("data/testing.dat");
 		if(testing.exists())
 			testing.delete();
 		
 		
-        ChunkedAccess file1 = new RAFile(new File("testingFile.dat"),16, FieldFileNode.MAX_SIZE);
+        ChunkedAccess file1 = new RAFile(new File("data/testingFile.dat"),16, FieldFileNode.MAX_SIZE);
         FieldDatabase fieldDB = new HashmapFieldDatabase(file1);
-        ChunkedAccess file2 = new RAFile(new File("testing.dat"), 16, FieldFileNode.MAX_SIZE);
+        ChunkedAccess file2 = new RAFile(new File("data/testing.dat"), 16, FieldFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);
         
         IntegratedFileDatabase database = new IntegratedFileDatabase(fieldDB, identDB);
@@ -492,18 +492,18 @@ public class IntegrationTests
 
     @Test
     public void AVLIntegrationTesting1(){
-		File testingFile = new File("testingFile.dat");
+		File testingFile = new File("data/testingFile.dat");
 		if(testingFile.exists())
 			testingFile.delete();
 		
-		File testing = new File("testing.dat");
+		File testing = new File("data/testing.dat");
 		if(testing.exists())
 			testing.delete();
 		
 		
-        ChunkedAccess file1 = new RAFile(new File("testingFile.dat"),16, FieldFileNode.MAX_SIZE);
+        ChunkedAccess file1 = new RAFile(new File("data/testingFile.dat"),16, FieldFileNode.MAX_SIZE);
         FieldDatabase fieldDB = new AVLFieldDatabase(file1);
-        ChunkedAccess file2 = new RAFile(new File("testing.dat"), 16, FieldFileNode.MAX_SIZE);
+        ChunkedAccess file2 = new RAFile(new File("data/testing.dat"), 16, FieldFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);
         
         IntegratedFileDatabase database = new IntegratedFileDatabase(fieldDB, identDB);
@@ -526,18 +526,18 @@ public class IntegrationTests
     
     @Test
     public void BinaryIntegrationTesting1(){
-		File testingFile = new File("testingFile.dat");
+		File testingFile = new File("data/testingFile.dat");
 		if(testingFile.exists())
 			testingFile.delete();
 		
-		File testing = new File("testing.dat");
+		File testing = new File("data/testing.dat");
 		if(testing.exists())
 			testing.delete();
 		
 		
-        ChunkedAccess file1 = new RAFile(new File("testingFile.dat"),16, FieldFileNode.MAX_SIZE);
+        ChunkedAccess file1 = new RAFile(new File("data/testingFile.dat"),16, FieldFileNode.MAX_SIZE);
         FieldDatabase fieldDB = new BinaryTreeFieldDatabase(file1);
-        ChunkedAccess file2 = new RAFile(new File("testing.dat"), 16, FieldFileNode.MAX_SIZE);
+        ChunkedAccess file2 = new RAFile(new File("data/testing.dat"), 16, FieldFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);
         
         IntegratedFileDatabase database = new IntegratedFileDatabase(fieldDB, identDB);
@@ -559,18 +559,18 @@ public class IntegrationTests
     
     @Test
     public void HashMapIntegrationTesting1(){
-		File testingFile = new File("testingFile.dat");
+		File testingFile = new File("data/testingFile.dat");
 		if(testingFile.exists())
 			testingFile.delete();
 		
-		File testing = new File("testing.dat");
+		File testing = new File("data/testing.dat");
 		if(testing.exists())
 			testing.delete();
 		
 		
-        ChunkedAccess file1 = new RAFile(new File("testingFile.dat"),16, FieldFileNode.MAX_SIZE);
+        ChunkedAccess file1 = new RAFile(new File("data/testingFile.dat"),16, FieldFileNode.MAX_SIZE);
         FieldDatabase fieldDB = new HashmapFieldDatabase(file1);
-        ChunkedAccess file2 = new RAFile(new File("testing.dat"), 16, FieldFileNode.MAX_SIZE);
+        ChunkedAccess file2 = new RAFile(new File("data/testing.dat"), 16, FieldFileNode.MAX_SIZE);
         IdentifierDatabase identDB = new IdentifierDatabase(file2);
         
         IntegratedFileDatabase database = new IntegratedFileDatabase(fieldDB, identDB);

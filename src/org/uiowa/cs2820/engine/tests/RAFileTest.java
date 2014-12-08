@@ -106,7 +106,7 @@ public class RAFileTest
     
     public File doesFileExist()
     {
-    	File fileToDelete = new File("test filename.dat");
+    	File fileToDelete = new File("data/test filename.dat");
     	if (fileToDelete.exists())
     		fileToDelete.delete();
     	return fileToDelete;

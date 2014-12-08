@@ -34,8 +34,8 @@ public class IntegratedFileDatabase implements Database
      */
     public IntegratedFileDatabase()
     {
-        this(new AVLFieldDatabase(new RAFile(new File("fieldDatabase.dat"), 16, FieldFileNode.MAX_SIZE)), 
-                new IdentifierDatabase(new RAFile(new File("identifierDatabase.dat"), 16, ValueFileNode.MAX_SIZE)));
+        this(new AVLFieldDatabase(new RAFile(new File("data/fieldDatabase.dat"), 16, FieldFileNode.MAX_SIZE)), 
+                new IdentifierDatabase(new RAFile(new File("data/identifierDatabase.dat"), 16, ValueFileNode.MAX_SIZE)));
     }
 
     @Override

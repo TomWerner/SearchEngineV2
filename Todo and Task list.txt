@@ -42,4 +42,10 @@ Query Parsing plan:
 		The tests check the different combinations of tokens and parenthesis.
 		For the simple parser the characters can be changed, for the complex they're set.
 		
- 
+ MP3 Parsing plan:
+ 	General idea:
+ 		I wanted to have an actual use for this database/search engine, which requires
+ 		an actual source of tagged data. MP3 files seem like the perfect use, as
+ 		the metadata is all tagged data.
+ 	Libraries used:
+ 		mp3agic
