@@ -87,5 +87,10 @@ public class IntegratedFileDatabase implements Database
             fieldDB.setIdentifierPosition(field, linkedListHeadPosition);
         }
     }
+    
+    public String toString()
+    {
+        return fieldDB.toString();
+    }
 
 }
