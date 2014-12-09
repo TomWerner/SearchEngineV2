@@ -22,6 +22,14 @@ public class SimpleTokenizer implements Tokenizer
     {
     }
     
+    @Override
+    public boolean canHandleParenthesis()
+    {
+        return false;
+    }
+
+
+
     public SimpleTokenizer(char quote, char startField, char endField, char startQuery, char endQUery, HashSet<Character> whitespace)
     {
     	this.QUOTE = quote;

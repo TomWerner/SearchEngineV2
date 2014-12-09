@@ -18,6 +18,14 @@ public class SimpleTokenParser implements TokenParser
     {
     }
     
+    @Override
+    public boolean canHandleParenthesis()
+    {
+        return false;
+    }
+
+
+
     /* (non-Javadoc)
      * @see org.uiowa.cs2820.engine.queryparser.TokenParser#parseTokens(java.util.ArrayList)
      */

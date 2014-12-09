@@ -15,6 +15,12 @@ import org.uiowa.cs2820.engine.queries.Queryable;
 
 public class SimpleStackTokenParser implements TokenParser
 {
+    @Override
+    public boolean canHandleParenthesis()
+    {
+        return false;
+    }
+
     public Queryable parseTokens(ArrayList<Token> tokens) throws ParsingException
     {
         Stack<Object> stack = createQueryOperatorStack(tokens);

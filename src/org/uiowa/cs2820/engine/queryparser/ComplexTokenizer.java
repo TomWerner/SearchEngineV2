@@ -5,8 +5,9 @@ import java.util.HashSet;
 
 /**
  * This tokenizer allows for parenthesizing input
+ * 
  * @author Tom
- *
+ * 
  */
 public class ComplexTokenizer implements Tokenizer
 {
@@ -17,26 +18,43 @@ public class ComplexTokenizer implements Tokenizer
     private char END_QUERY = ']';
     private char START_PAREN = '(';
     private char END_PAREN = ')';
-    
+
     private HashSet<Character> whitespace = new HashSet<Character>();
-    {{
-        whitespace.add(' ');
-        whitespace.add('.');
-        whitespace.add(',');
-    }}
+    {
+        {
+            whitespace.add(' ');
+            whitespace.add('.');
+            whitespace.add(',');
+        }
+    }
 
     public ComplexTokenizer()
     {
     }
 
-    /* (non-Javadoc)
-     * @see org.uiowa.cs2820.engine.queryparser.Tokenizer#tokenize(java.lang.String)
+    @Override
+    public boolean canHandleParenthesis()
+    {
+        return true;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.uiowa.cs2820.engine.queryparser.Tokenizer#tokenize(java.lang.String)
      */
     @Override
     public ArrayList<Token> tokenize(String string)
     {
         ArrayList<Token> tokens = new ArrayList<Token>();
-        tokens.add(new Token(""+ START_PAREN, Token.PAREN_START)); // The entire thing should be enclosed in parenthesis
+        tokens.add(new Token("" + START_PAREN, Token.PAREN_START)); // The
+                                                                    // entire
+                                                                    // thing
+                                                                    // should be
+                                                                    // enclosed
+                                                                    // in
+                                                                    // parenthesis
         StringBuffer currentToken = new StringBuffer();
 
         for (int i = 0; i < string.length(); i++)
@@ -101,7 +119,11 @@ public class ComplexTokenizer implements Tokenizer
                 currentToken.append(current);
             }
         }
-        tokens.add(new Token(""+ END_PAREN, Token.PAREN_END)); // The entire thing should be enclosed in parenthesis
+        tokens.add(new Token("" + END_PAREN, Token.PAREN_END)); // The entire
+                                                                // thing should
+                                                                // be enclosed
+                                                                // in
+                                                                // parenthesis
 
         return tokens;
     }

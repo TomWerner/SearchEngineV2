@@ -8,5 +8,5 @@ public interface TokenParser
 {
 
     public abstract Queryable parseTokens(ArrayList<Token> tokens) throws ParsingException;
-
+    public boolean canHandleParenthesis();
 }

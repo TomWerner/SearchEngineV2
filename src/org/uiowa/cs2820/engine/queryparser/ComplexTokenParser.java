@@ -19,6 +19,12 @@ public class ComplexTokenParser implements TokenParser
     {
     }
 
+    @Override
+    public boolean canHandleParenthesis()
+    {
+        return true;
+    }
+
     /*
      * (non-Javadoc)
      * 
