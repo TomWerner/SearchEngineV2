@@ -12,8 +12,6 @@ import java.util.HashSet;
 public class ComplexTokenizer implements Tokenizer
 {
     private char QUOTE = '\"';
-    private char START_FIELD = '{';
-    private char END_FIELD = '}';
     private char START_PAREN = '(';
     private char END_PAREN = ')';
 
@@ -78,32 +76,43 @@ public class ComplexTokenizer implements Tokenizer
                 i = k;
                 tokens.add(new Token(term.toString(), Token.TERM));
             }
-            else if (current == START_FIELD)
-            {
-                if (currentToken.length() != 0)
-                {
-                    tokens.add(new Token(currentToken.toString(), Token.FIELD_OPERATOR));
-                    currentToken = new StringBuffer();
-                }
-                tokens.add(new Token("" + current, Token.FIELD_START));
-            }
-            else if (current == END_FIELD)
-            {
-                tokens.add(new Token("" + current, Token.FIELD_END));
-                currentToken = new StringBuffer();
-            }
+            // else if (current == START_FIELD)
+            // {
+            // if (currentToken.length() != 0)
+            // {
+            // tokens.add(new Token(currentToken.toString(),
+            // Token.FIELD_OPERATOR));
+            // currentToken = new StringBuffer();
+            // }
+            // tokens.add(new Token("" + current, Token.FIELD_START));
+            // }
+            // else if (current == END_FIELD)
+            // {
+            // tokens.add(new Token("" + current, Token.FIELD_END));
+            // currentToken = new StringBuffer();
+            // }
             else if (current == START_PAREN)
             {
-                if (currentToken.length() != 0)
+                if (getNextNonWhitespaceCharacter(string, i) == QUOTE)
                 {
-                    tokens.add(new Token(currentToken.toString(), Token.QUERY_OPERATOR));
-                    currentToken = new StringBuffer();
+                    if (currentToken.length() != 0)
+                        tokens.add(new Token(currentToken.toString(), Token.FIELD_OPERATOR));
+                    tokens.add(new Token("" + current, Token.FIELD_START));
                 }
-                tokens.add(new Token("" + current, Token.PAREN_START));
+                else
+                {
+                    if (currentToken.length() != 0)
+                        tokens.add(new Token(currentToken.toString(), Token.QUERY_OPERATOR));
+                    tokens.add(new Token("" + current, Token.PAREN_START));
+                }
+                currentToken = new StringBuffer();
             }
             else if (current == END_PAREN)
             {
-                tokens.add(new Token("" + current, Token.PAREN_END));
+                if (getPreviousNonWhitespaceCharacter(string, i) == QUOTE)
+                    tokens.add(new Token("" + current, Token.FIELD_END));
+                else
+                    tokens.add(new Token("" + current, Token.PAREN_END));
                 currentToken = new StringBuffer();
             }
             else if (!whitespace.contains(current))
@@ -121,8 +130,24 @@ public class ComplexTokenizer implements Tokenizer
                                                                 // be enclosed
                                                                 // in
                                                                 // parenthesis
-
         return tokens;
     }
+    
+    private char getPreviousNonWhitespaceCharacter(String string, int currentPosition)
+    {
+        for (int i = currentPosition - 1; i >= 0; i--)
+            if (!whitespace.contains(string.charAt(i)))
+                return string.charAt(i);
+        return 0;
+    }
+
+    private char getNextNonWhitespaceCharacter(String string, int currentPosition)
+    {
+        for (int i = currentPosition + 1; i < string.length(); i++)
+            if (!whitespace.contains(string.charAt(i)))
+                return string.charAt(i);
+        return 0;
+    }
+    
 
 }

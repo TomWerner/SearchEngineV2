@@ -21,7 +21,7 @@ public class ComplexTokenParserTest
     @Test
     public void testDefaultOperatorSingleQuery() throws ParsingException
     {
-        String expression = "{\"Field\", \"Value\"}";
+        String expression = "(\"Field\", \"Value\")";
         Query result = (Query) parseString(expression);
 
         assertEquals(new Field("Field", "Value"), result.getField());
@@ -31,7 +31,7 @@ public class ComplexTokenParserTest
     @Test
     public void testSpecifiedOperatorSingleQuery() throws ParsingException
     {
-        String expression = "equal {\"Field\", \"Value\"}";
+        String expression = "equal (\"Field\", \"Value\")";
         Query result = (Query) parseString(expression);
 
         assertEquals(new Field("Field", "Value"), result.getField());
@@ -41,7 +41,7 @@ public class ComplexTokenParserTest
     @Test
     public void testDefaultOperatorSingleQueryWithQueryMarkings() throws ParsingException
     {
-        String expression = "{\"Field\", \"Value\"}";
+        String expression = "(\"Field\", \"Value\")";
         Query result = (Query) parseString(expression);
 
         assertEquals(new Field("Field", "Value"), result.getField());
@@ -51,7 +51,7 @@ public class ComplexTokenParserTest
     @Test
     public void testSpecifiedOperatorSingleQueryWithQueryMarkings() throws ParsingException
     {
-        String expression = "equal {\"Field\", \"Value\"}";
+        String expression = "equal (\"Field\", \"Value\")";
         Query result = (Query) parseString(expression);
 
         assertEquals(new Field("Field", "Value"), result.getField());
@@ -61,7 +61,7 @@ public class ComplexTokenParserTest
     @Test
     public void testTwoQueries() throws ParsingException
     {
-        String expression = "equal {\"Field\", \"Value\"} and {\"Field\", \"Other value\"}";
+        String expression = "equal (\"Field\", \"Value\") and (\"Field\", \"Other value\")";
         DoubleQuery result = (DoubleQuery) parseString(expression);
 
         Query query1 = (Query) result.getQuery1();
@@ -79,7 +79,7 @@ public class ComplexTokenParserTest
     @Test
     public void testTwoQueriesDefaultOperator() throws ParsingException
     {
-        String expression = "equal {\"Field\", \"Value\"}{\"Field\", \"Other value\"}";
+        String expression = "equal (\"Field\", \"Value\")(\"Field\", \"Other value\")";
         DoubleQuery result = (DoubleQuery) parseString(expression);
 
         Query query1 = (Query) result.getQuery1();
@@ -100,7 +100,7 @@ public class ComplexTokenParserTest
         String expression = "";
         int number = 4;
         for (int i = 0; i < number; i++)
-            expression += "equals {\"Field\", \"" + i + "\"}";
+            expression += "equals (\"Field\", \"" + i + "\")";
 
         DoubleQuery result = (DoubleQuery) parseString(expression);
         // n = 4
@@ -135,7 +135,7 @@ public class ComplexTokenParserTest
         String expression = "";
         int number = 10;
         for (int i = 0; i < number; i++)
-            expression += "equals {\"Field\", \"" + i + "\"}";
+            expression += "equals (\"Field\", \"" + i + "\")";
 
         DoubleQuery result = (DoubleQuery) parseString(expression);
         // n = 4
@@ -176,9 +176,9 @@ public class ComplexTokenParserTest
     @Test
     public void testThreeQueriesNormal() throws ParsingException
     {
-        String qA = "equal {\"Field\", \"a\"}";
-        String qB = "{\"Field\", \"b\"}";
-        String qC = "equal {\"Field\", \"c\"}";
+        String qA = "equal (\"Field\", \"a\")";
+        String qB = "(\"Field\", \"b\")";
+        String qC = "equal (\"Field\", \"c\")";
         String wholeThing = "(" + qA + " or " + qB + ") and " + qC;
         String query1 = qA + " or " + qB;
         String query2 = qC;
@@ -194,9 +194,9 @@ public class ComplexTokenParserTest
     @Test
     public void testThreeQueriesBackwards() throws ParsingException
     {
-        String qA = "equal {\"Field\", \"a\"}";
-        String qB = "{\"Field\", \"b\"}";
-        String qC = "equal {\"Field\", \"c\"}";
+        String qA = "equal (\"Field\", \"a\")";
+        String qB = "(\"Field\", \"b\")";
+        String qC = "equal (\"Field\", \"c\")";
         String wholeThing = qA + " or (" + qB + " and " + qC + ")";
         String query1 = qA;
         String query2 = qB + "and" + qC;
@@ -212,7 +212,7 @@ public class ComplexTokenParserTest
     @Test
     public void testFourQueriesNormal() throws ParsingException
     {
-        String qA = "equal {\"Field\", \"a\"}";
+        String qA = "equal (\"Field\", \"a\")";
         String wholeThing = String.format("(((%s or %s) or %s) or %s)", qA, qA, qA, qA);
         
         Query right = (Query) parseString(qA);
@@ -234,7 +234,7 @@ public class ComplexTokenParserTest
     @Test
     public void testFourQueriesBackwards() throws ParsingException
     {
-        String qA = "equal {\"Field\", \"a\"}";
+        String qA = "equal (\"Field\", \"a\")";
         String wholeThing = String.format("(%s or (%s or (%s or %s)))", qA, qA, qA, qA);
         
         Query left = (Query) parseString(qA);
@@ -256,7 +256,7 @@ public class ComplexTokenParserTest
     @Test
     public void testFourQueriesPaired() throws ParsingException
     {
-        String qA = "equal {\"Field\", \"a\"}";
+        String qA = "equal (\"Field\", \"a\")";
         String wholeThing = String.format("(%s or %s) or (%s and %s)", qA, qA, qA, qA);
         
         Query query = (Query) parseString(qA);

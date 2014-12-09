@@ -75,15 +75,16 @@ public class ComplexTokenizerTest
     @Test
     public void testDoubleTermSurroundedByFieldParse()
     {
-        String string = "{\"Term\", \"Term2\"}";
+        String string = "(\"Term\", \"Term2\")";
         Tokenizer tokenizer = getTokenizer();
         ArrayList<Token> tokens = tokenizer.tokenize(string);
-
+        for (Token token : tokens)
+            System.out.println(token + " - " + token.getType());
         int i = -1;
         assertEquals("(", tokens.get(++i).getString());
         assertEquals(Token.PAREN_START, tokens.get(i).getType());
         
-        assertEquals("{", tokens.get(++i).getString());
+        assertEquals("(", tokens.get(++i).getString());
         assertEquals(Token.FIELD_START, tokens.get(i).getType());
         
         assertEquals("Term", tokens.get(++i).getString());
@@ -92,7 +93,7 @@ public class ComplexTokenizerTest
         assertEquals("Term2", tokens.get(++i).getString());
         assertEquals(Token.TERM, tokens.get(i).getType());
         
-        assertEquals("}", tokens.get(++i).getString());
+        assertEquals(")", tokens.get(++i).getString());
         assertEquals(Token.FIELD_END, tokens.get(i).getType());
 
         assertEquals(")", tokens.get(++i).getString());
@@ -100,9 +101,9 @@ public class ComplexTokenizerTest
     }
 
     @Test
-    public void testDoubleTermSurroundedByFieldWithGarbageParse()
+    public void testDoubleTermSurroundedByFieldWithWhitespaceParse()
     {
-        String string = "{sadfh\"Term\"gasd,gasdg\"Term2\"sadfasd}";
+        String string = "( ,.\"Term\"gasd,gasdg\"Term2\",. ., ,. )";
         Tokenizer tokenizer = getTokenizer();
         ArrayList<Token> tokens = tokenizer.tokenize(string);
 
@@ -110,7 +111,7 @@ public class ComplexTokenizerTest
         assertEquals("(", tokens.get(++i).getString());
         assertEquals(Token.PAREN_START, tokens.get(i).getType());
         
-        assertEquals("{", tokens.get(++i).getString());
+        assertEquals("(", tokens.get(++i).getString());
         assertEquals(Token.FIELD_START, tokens.get(i).getType());
         
         assertEquals("Term", tokens.get(++i).getString());
@@ -119,7 +120,7 @@ public class ComplexTokenizerTest
         assertEquals("Term2", tokens.get(++i).getString());
         assertEquals(Token.TERM, tokens.get(i).getType());
         
-        assertEquals("}", tokens.get(++i).getString());
+        assertEquals(")", tokens.get(++i).getString());
         assertEquals(Token.FIELD_END, tokens.get(i).getType());
 
         assertEquals(")", tokens.get(++i).getString());
@@ -129,7 +130,7 @@ public class ComplexTokenizerTest
     @Test
     public void testDoubleTermSurroundedByFieldWithOperatorParse()
     {
-        String string = "operator{\"Term\", \"Term2\"}";
+        String string = "operator(\"Term\", \"Term2\")";
         Tokenizer tokenizer = getTokenizer();
         ArrayList<Token> tokens = tokenizer.tokenize(string);
 
@@ -140,7 +141,7 @@ public class ComplexTokenizerTest
         assertEquals("OPERATOR", tokens.get(++i).getString());
         assertEquals(Token.FIELD_OPERATOR, tokens.get(i).getType());
         
-        assertEquals("{",tokens.get(++i).getString());
+        assertEquals("(",tokens.get(++i).getString());
         assertEquals(Token.FIELD_START, tokens.get(i).getType());
         
         assertEquals("Term", tokens.get(++i).getString());
@@ -149,7 +150,7 @@ public class ComplexTokenizerTest
         assertEquals("Term2", tokens.get(++i).getString());
         assertEquals(Token.TERM, tokens.get(i).getType());
         
-        assertEquals("}", tokens.get(++i).getString());
+        assertEquals(")", tokens.get(++i).getString());
         assertEquals(Token.FIELD_END, tokens.get(i).getType());
 
         assertEquals(")", tokens.get(++i).getString());
@@ -159,7 +160,7 @@ public class ComplexTokenizerTest
     @Test
     public void testDoubleTermSurroundedByFieldWithOperatorAndWhitespaceParse()
     {
-        String string = " operator {\"Term\", \"Term2\"}";
+        String string = " operator (\"Term\", \"Term2\")";
         Tokenizer tokenizer = getTokenizer();
         ArrayList<Token> tokens = tokenizer.tokenize(string);
 
@@ -170,7 +171,7 @@ public class ComplexTokenizerTest
         assertEquals("OPERATOR", tokens.get(++i).getString());
         assertEquals(Token.FIELD_OPERATOR, tokens.get(i).getType());
         
-        assertEquals("{",tokens.get(++i).getString());
+        assertEquals("(",tokens.get(++i).getString());
         assertEquals(Token.FIELD_START, tokens.get(i).getType());
         
         assertEquals("Term", tokens.get(++i).getString());
@@ -179,7 +180,7 @@ public class ComplexTokenizerTest
         assertEquals("Term2", tokens.get(++i).getString());
         assertEquals(Token.TERM, tokens.get(i).getType());
         
-        assertEquals("}", tokens.get(++i).getString());
+        assertEquals(")", tokens.get(++i).getString());
         assertEquals(Token.FIELD_END, tokens.get(i).getType());
 
         assertEquals(")", tokens.get(++i).getString());
@@ -189,7 +190,7 @@ public class ComplexTokenizerTest
     @Test
     public void testDoubleTermSurroundedByFieldWithOperatorAndWhitespaceAndQueryParse()
     {
-        String string = "operator { \"Term\", \"Term2\" }";
+        String string = "operator ( \"Term\", \"Term2\" )";
         Tokenizer tokenizer = getTokenizer();
         ArrayList<Token> tokens = tokenizer.tokenize(string);
 
@@ -200,7 +201,7 @@ public class ComplexTokenizerTest
         assertEquals("OPERATOR", tokens.get(++i).getString());
         assertEquals(Token.FIELD_OPERATOR, tokens.get(i).getType());
         
-        assertEquals("{",tokens.get(++i).getString());
+        assertEquals("(",tokens.get(++i).getString());
         assertEquals(Token.FIELD_START, tokens.get(i).getType());
         
         assertEquals("Term", tokens.get(++i).getString());
@@ -209,7 +210,7 @@ public class ComplexTokenizerTest
         assertEquals("Term2", tokens.get(++i).getString());
         assertEquals(Token.TERM, tokens.get(i).getType());
 
-        assertEquals("}", tokens.get(++i).getString());
+        assertEquals(")", tokens.get(++i).getString());
         assertEquals(Token.FIELD_END, tokens.get(i).getType());
                 
         assertEquals(")", tokens.get(++i).getString());
@@ -219,7 +220,7 @@ public class ComplexTokenizerTest
     @Test
     public void testOperatorBetweenQueryParse()
     {
-        String string = "equals{\"a\",\"b\"} and equals{\"c\",\"d\"}";
+        String string = "equals(\"a\",\"b\") and equals(\"c\",\"d\")";
         Tokenizer tokenizer = getTokenizer();
         ArrayList<Token> tokens = tokenizer.tokenize(string);
         
@@ -230,7 +231,7 @@ public class ComplexTokenizerTest
         assertEquals("EQUALS", tokens.get(++i).getString());
         assertEquals(Token.FIELD_OPERATOR, tokens.get(i).getType());
 
-        assertEquals("{", tokens.get(++i).getString());
+        assertEquals("(", tokens.get(++i).getString());
         assertEquals(Token.FIELD_START, tokens.get(i).getType());
 
         assertEquals("a", tokens.get(++i).getString());
@@ -239,7 +240,7 @@ public class ComplexTokenizerTest
         assertEquals("b", tokens.get(++i).getString());
         assertEquals(Token.TERM, tokens.get(i).getType());
 
-        assertEquals("}", tokens.get(++i).getString());
+        assertEquals(")", tokens.get(++i).getString());
         assertEquals(Token.FIELD_END, tokens.get(i).getType());
         
         assertEquals("AND", tokens.get(++i).getString());
@@ -248,7 +249,7 @@ public class ComplexTokenizerTest
         assertEquals("EQUALS", tokens.get(++i).getString());
         assertEquals(Token.FIELD_OPERATOR, tokens.get(i).getType());
 
-        assertEquals("{", tokens.get(++i).getString());
+        assertEquals("(", tokens.get(++i).getString());
         assertEquals(Token.FIELD_START, tokens.get(i).getType());
 
         assertEquals("c", tokens.get(++i).getString());
@@ -257,7 +258,7 @@ public class ComplexTokenizerTest
         assertEquals("d", tokens.get(++i).getString());
         assertEquals(Token.TERM, tokens.get(i).getType());
 
-        assertEquals("}", tokens.get(++i).getString());
+        assertEquals(")", tokens.get(++i).getString());
         assertEquals(Token.FIELD_END, tokens.get(i).getType());
         
         assertEquals(")", tokens.get(++i).getString());
@@ -267,7 +268,7 @@ public class ComplexTokenizerTest
     @Test
     public void testParenBackwards()
     {
-        String string = "equals{\"a\",\"b\"} and (equals{\"c\",\"d\"} or equals{\"e\",\"f\"})";
+        String string = "equals(\"a\",\"b\") and (equals(\"c\",\"d\") or equals(\"e\",\"f\"))";
         Tokenizer tokenizer = getTokenizer();
         ArrayList<Token> tokens = tokenizer.tokenize(string);
         
@@ -278,7 +279,7 @@ public class ComplexTokenizerTest
         assertEquals("EQUALS", tokens.get(++i).getString());
         assertEquals(Token.FIELD_OPERATOR, tokens.get(i).getType());
 
-        assertEquals("{", tokens.get(++i).getString());
+        assertEquals("(", tokens.get(++i).getString());
         assertEquals(Token.FIELD_START, tokens.get(i).getType());
 
         assertEquals("a", tokens.get(++i).getString());
@@ -287,7 +288,7 @@ public class ComplexTokenizerTest
         assertEquals("b", tokens.get(++i).getString());
         assertEquals(Token.TERM, tokens.get(i).getType());
 
-        assertEquals("}", tokens.get(++i).getString());
+        assertEquals(")", tokens.get(++i).getString());
         assertEquals(Token.FIELD_END, tokens.get(i).getType());
         
         assertEquals("AND", tokens.get(++i).getString());
@@ -299,7 +300,7 @@ public class ComplexTokenizerTest
         assertEquals("EQUALS", tokens.get(++i).getString());
         assertEquals(Token.FIELD_OPERATOR, tokens.get(i).getType());
 
-        assertEquals("{", tokens.get(++i).getString());
+        assertEquals("(", tokens.get(++i).getString());
         assertEquals(Token.FIELD_START, tokens.get(i).getType());
 
         assertEquals("c", tokens.get(++i).getString());
@@ -308,7 +309,7 @@ public class ComplexTokenizerTest
         assertEquals("d", tokens.get(++i).getString());
         assertEquals(Token.TERM, tokens.get(i).getType());
 
-        assertEquals("}", tokens.get(++i).getString());
+        assertEquals(")", tokens.get(++i).getString());
         assertEquals(Token.FIELD_END, tokens.get(i).getType());
         
         assertEquals("OR", tokens.get(++i).getString());
@@ -317,7 +318,7 @@ public class ComplexTokenizerTest
         assertEquals("EQUALS", tokens.get(++i).getString());
         assertEquals(Token.FIELD_OPERATOR, tokens.get(i).getType());
 
-        assertEquals("{", tokens.get(++i).getString());
+        assertEquals("(", tokens.get(++i).getString());
         assertEquals(Token.FIELD_START, tokens.get(i).getType());
 
         assertEquals("e", tokens.get(++i).getString());
@@ -326,7 +327,7 @@ public class ComplexTokenizerTest
         assertEquals("f", tokens.get(++i).getString());
         assertEquals(Token.TERM, tokens.get(i).getType());
 
-        assertEquals("}", tokens.get(++i).getString());
+        assertEquals(")", tokens.get(++i).getString());
         assertEquals(Token.FIELD_END, tokens.get(i).getType());
 
         assertEquals(")", tokens.get(++i).getString());
@@ -339,7 +340,7 @@ public class ComplexTokenizerTest
     @Test
     public void testParenNormal()
     {
-        String string = "(equals{\"a\",\"b\"} and equals{\"c\",\"d\"}) or equals{\"e\",\"f\"}";
+        String string = "(equals(\"a\",\"b\") and equals(\"c\",\"d\")) or equals(\"e\",\"f\")";
         Tokenizer tokenizer = getTokenizer();
         ArrayList<Token> tokens = tokenizer.tokenize(string);
         
@@ -353,7 +354,7 @@ public class ComplexTokenizerTest
         assertEquals("EQUALS", tokens.get(++i).getString());
         assertEquals(Token.FIELD_OPERATOR, tokens.get(i).getType());
 
-        assertEquals("{", tokens.get(++i).getString());
+        assertEquals("(", tokens.get(++i).getString());
         assertEquals(Token.FIELD_START, tokens.get(i).getType());
 
         assertEquals("a", tokens.get(++i).getString());
@@ -362,7 +363,7 @@ public class ComplexTokenizerTest
         assertEquals("b", tokens.get(++i).getString());
         assertEquals(Token.TERM, tokens.get(i).getType());
 
-        assertEquals("}", tokens.get(++i).getString());
+        assertEquals(")", tokens.get(++i).getString());
         assertEquals(Token.FIELD_END, tokens.get(i).getType());
         
         assertEquals("AND", tokens.get(++i).getString());
@@ -371,7 +372,7 @@ public class ComplexTokenizerTest
         assertEquals("EQUALS", tokens.get(++i).getString());
         assertEquals(Token.FIELD_OPERATOR, tokens.get(i).getType());
 
-        assertEquals("{", tokens.get(++i).getString());
+        assertEquals("(", tokens.get(++i).getString());
         assertEquals(Token.FIELD_START, tokens.get(i).getType());
 
         assertEquals("c", tokens.get(++i).getString());
@@ -380,7 +381,7 @@ public class ComplexTokenizerTest
         assertEquals("d", tokens.get(++i).getString());
         assertEquals(Token.TERM, tokens.get(i).getType());
 
-        assertEquals("}", tokens.get(++i).getString());
+        assertEquals(")", tokens.get(++i).getString());
         assertEquals(Token.FIELD_END, tokens.get(i).getType());
 
         assertEquals(")", tokens.get(++i).getString());
@@ -392,7 +393,7 @@ public class ComplexTokenizerTest
         assertEquals("EQUALS", tokens.get(++i).getString());
         assertEquals(Token.FIELD_OPERATOR, tokens.get(i).getType());
 
-        assertEquals("{", tokens.get(++i).getString());
+        assertEquals("(", tokens.get(++i).getString());
         assertEquals(Token.FIELD_START, tokens.get(i).getType());
 
         assertEquals("e", tokens.get(++i).getString());
@@ -401,7 +402,7 @@ public class ComplexTokenizerTest
         assertEquals("f", tokens.get(++i).getString());
         assertEquals(Token.TERM, tokens.get(i).getType());
 
-        assertEquals("}", tokens.get(++i).getString());
+        assertEquals(")", tokens.get(++i).getString());
         assertEquals(Token.FIELD_END, tokens.get(i).getType());
 
         assertEquals(")", tokens.get(++i).getString());
