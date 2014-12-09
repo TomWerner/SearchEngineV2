@@ -222,7 +222,7 @@ public class ComplexTokenizerTest
         String string = "equals{\"a\",\"b\"} and equals{\"c\",\"d\"}";
         Tokenizer tokenizer = getTokenizer();
         ArrayList<Token> tokens = tokenizer.tokenize(string);
-        System.out.println(tokens);
+        
         int i = -1;
         assertEquals("(", tokens.get(++i).getString());
         assertEquals(Token.PAREN_START, tokens.get(i).getType());

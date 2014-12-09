@@ -103,7 +103,6 @@ public class ComplexTokenParserTest
             expression += "equals {\"Field\", \"" + i + "\"}";
 
         DoubleQuery result = (DoubleQuery) parseString(expression);
-        // System.out.println(result);
         // n = 4
         // (((a, b), c), d)
         // By doing it like this we have sets of double queries
@@ -139,7 +138,6 @@ public class ComplexTokenParserTest
             expression += "equals {\"Field\", \"" + i + "\"}";
 
         DoubleQuery result = (DoubleQuery) parseString(expression);
-        // System.out.println(result);
         // n = 4
         // (((a, b), c), d)
         // By doing it like this we have sets of double queries
