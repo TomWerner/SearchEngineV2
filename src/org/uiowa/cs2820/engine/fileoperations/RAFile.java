@@ -64,7 +64,10 @@ public class RAFile extends ChunkedAccess
 		RandomAccessFile file;
 		try {
 			file = new RandomAccessFile(FILE, "rw");
-			file.setLength(length); 
+			if (length > file.length())
+			    file.setLength(length);
+			else
+			    numberOfChunks = (int) (file.length() / chunkSize);
 			file.close();
 		} catch (IOException e) {
 			e.printStackTrace();
