@@ -14,14 +14,8 @@ import org.uiowa.cs2820.engine.queries.QueryOperator;
 import org.uiowa.cs2820.engine.queries.QueryOr;
 import org.uiowa.cs2820.engine.queries.Queryable;
 
-public class SimpleTokenParser implements TokenParser
+public class SimpleTokenParser
 {
-    @Override
-    public boolean canHandleParenthesis()
-    {
-        return false;
-    }
-
     public Queryable parseTokens(ArrayList<Token> tokens) throws ParsingException
     {
         try
@@ -69,6 +63,16 @@ public class SimpleTokenParser implements TokenParser
 
                 Query query = buildQuery(substack);
                 stack.push(query);
+            }
+            else if (token.getType() == Token.FIELD_START || token.getType() == Token.FIELD_OPERATOR)
+            {
+                if (stack.peek() instanceof Queryable)
+                {
+                    stack.push(new QueryOr());
+                    stack.push(token);
+                }
+                else
+                    stack.push(token);
             }
             else if (token.getType() == Token.QUERY_OPERATOR)
                 stack.push(OperatorFactory.getQueryOperator(token.getString()));

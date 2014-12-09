@@ -14,8 +14,6 @@ public class ComplexTokenizer implements Tokenizer
     private char QUOTE = '\"';
     private char START_FIELD = '{';
     private char END_FIELD = '}';
-    private char START_QUERY = '[';
-    private char END_QUERY = ']';
     private char START_PAREN = '(';
     private char END_PAREN = ')';
 
@@ -25,6 +23,14 @@ public class ComplexTokenizer implements Tokenizer
             whitespace.add(' ');
             whitespace.add('.');
             whitespace.add(',');
+        }
+    }
+
+    private HashSet<String> queryOperators = new HashSet<String>();
+    {
+        {
+            queryOperators.add("AND");
+            queryOperators.add("OR");
         }
     }
 
@@ -86,20 +92,6 @@ public class ComplexTokenizer implements Tokenizer
                 tokens.add(new Token("" + current, Token.FIELD_END));
                 currentToken = new StringBuffer();
             }
-            else if (current == START_QUERY)
-            {
-                if (currentToken.length() != 0)
-                {
-                    tokens.add(new Token(currentToken.toString(), Token.QUERY_OPERATOR));
-                    currentToken = new StringBuffer();
-                }
-                tokens.add(new Token("" + current, Token.QUERY_START));
-            }
-            else if (current == END_QUERY)
-            {
-                tokens.add(new Token("" + current, Token.QUERY_END));
-                currentToken = new StringBuffer();
-            }
             else if (current == START_PAREN)
             {
                 if (currentToken.length() != 0)
@@ -116,7 +108,12 @@ public class ComplexTokenizer implements Tokenizer
             }
             else if (!whitespace.contains(current))
             {
-                currentToken.append(current);
+                currentToken.append(Character.toUpperCase(current));
+                if (queryOperators.contains(currentToken.toString()))
+                {
+                    tokens.add(new Token(currentToken.toString(), Token.QUERY_OPERATOR));
+                    currentToken = new StringBuffer();
+                }
             }
         }
         tokens.add(new Token("" + END_PAREN, Token.PAREN_END)); // The entire

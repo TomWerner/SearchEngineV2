@@ -4,8 +4,14 @@ import java.util.Stack;
 
 import org.uiowa.cs2820.engine.queries.Queryable;
 
-public class ComplexTokenParser extends SimpleTokenParser
+public class ComplexTokenParser extends SimpleTokenParser implements TokenParser
 {
+    @Override
+    public boolean canHandleParenthesis()
+    {
+        return true;
+    }
+
     @Override
     protected Queryable parseQueryOperatorStack(Stack<Object> stack)
     {
