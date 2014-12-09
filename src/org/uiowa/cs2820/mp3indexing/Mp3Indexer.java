@@ -22,10 +22,11 @@ public class Mp3Indexer
 
     public void addFields()
     {
-        if (mp3File.hasId3v1Tag())
-            addId3v1Tags();
         if (mp3File.hasId3v2Tag())
             addId3v2Tags();
+        else if (mp3File.hasId3v1Tag())
+            addId3v1Tags();
+
     }
 
     private void addId3v2Tags()
