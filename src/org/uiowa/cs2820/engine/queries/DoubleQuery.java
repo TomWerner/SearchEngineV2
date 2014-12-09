@@ -1,6 +1,9 @@
 package org.uiowa.cs2820.engine.queries;
 
-import org.uiowa.cs2820.engine.Field;
+import java.util.HashSet;
+
+import org.uiowa.cs2820.engine.databases.FieldFileNode;
+import org.uiowa.cs2820.engine.databases.IdentifierDatabase;
 
 public class DoubleQuery implements Queryable
 {
@@ -41,17 +44,31 @@ public class DoubleQuery implements Queryable
             boolean q1Match = query1.equals(((DoubleQuery) other).query1);
             boolean q2Match = query2.equals(((DoubleQuery) other).query2);
             boolean opMatch = operator.getClass().equals(((DoubleQuery) other).operator.getClass());
-            
+
             return q1Match && q2Match && opMatch;
         }
         return false;
     }
 
     @Override
-    public boolean isSatisfiedBy(Field testField)
+    public void isSatisfiedBy(FieldFileNode node, IdentifierDatabase identDB)
     {
-        return operator.isSatisfiedBy(query1.isSatisfiedBy(testField), query2.isSatisfiedBy(testField));
+        query1.isSatisfiedBy(node, identDB);
+        query2.isSatisfiedBy(node, identDB);
+    }
+
+    @Override
+    public void resetQuery()
+    {
+        query1.resetQuery();
+        query2.resetQuery();
+    }
+
+    @Override
+    public HashSet<String> evaluate()
+    {
+        return operator.evaluate(query1.evaluate(), query2.evaluate());
     }
     
-    
+
 }

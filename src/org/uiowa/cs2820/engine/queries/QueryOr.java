@@ -1,5 +1,7 @@
 package org.uiowa.cs2820.engine.queries;
 
+import java.util.HashSet;
+
 public class QueryOr implements QueryOperator
 {
     public String toString()
@@ -8,9 +10,12 @@ public class QueryOr implements QueryOperator
     }
 
     @Override
-    public boolean isSatisfiedBy(boolean operand1, boolean operand2)
+    public HashSet<String> evaluate(HashSet<String> query1Results, HashSet<String> query2Results)
     {
-        return operand1 || operand2;
+        HashSet<String> clone = new HashSet<String>(query1Results);
+        clone.addAll(query2Results);
+        return clone;
     }
+
     
 }

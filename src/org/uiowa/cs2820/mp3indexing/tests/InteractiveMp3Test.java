@@ -12,7 +12,6 @@ import org.uiowa.cs2820.engine.databases.IdentifierDatabase;
 import org.uiowa.cs2820.engine.databases.ValueFileNode;
 import org.uiowa.cs2820.engine.fileoperations.MockChunkRandomAccessFile;
 import org.uiowa.cs2820.engine.queries.Queryable;
-import org.uiowa.cs2820.engine.queryparser.ComplexQueryParser;
 import org.uiowa.cs2820.engine.queryparser.ComplexTokenParser;
 import org.uiowa.cs2820.engine.queryparser.ComplexTokenizer;
 import org.uiowa.cs2820.engine.queryparser.ParsingException;
@@ -30,7 +29,7 @@ public class InteractiveMp3Test
         Scanner scan = new Scanner(System.in);
         String input = "";
         Database database = getDatabase();
-        QueryParser parser = new ComplexQueryParser(new ComplexTokenizer(), new ComplexTokenParser());
+        QueryParser parser = new QueryParser(new ComplexTokenizer(), new ComplexTokenParser(), true);
         do
         {
             System.out.print("Enter a file: ");
@@ -42,7 +41,7 @@ public class InteractiveMp3Test
             }
         }
         while (!input.equals("done"));
-        System.out.println(database);
+        
         do
         {
             System.out.print("Enter a query: ");
@@ -50,10 +49,12 @@ public class InteractiveMp3Test
             if (!input.equals("done"))
             {
                 Queryable query = parser.parseQuery(input);
+                System.out.println(query);
                 System.out.println(database.matchQuery(query));
             }
         }
         while (!input.equals("done"));
+        scan.close();
     }
 
     public static Database getDatabase()

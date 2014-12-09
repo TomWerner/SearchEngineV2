@@ -1,8 +1,13 @@
 package org.uiowa.cs2820.engine.queries;
 
-import org.uiowa.cs2820.engine.Field;
+import java.util.HashSet;
+
+import org.uiowa.cs2820.engine.databases.FieldFileNode;
+import org.uiowa.cs2820.engine.databases.IdentifierDatabase;
 
 public interface Queryable
 {
-    public boolean isSatisfiedBy(Field testField);
+    public void isSatisfiedBy(FieldFileNode node, IdentifierDatabase identDB);
+    public void resetQuery();
+    public HashSet<String> evaluate();
 }

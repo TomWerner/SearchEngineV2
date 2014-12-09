@@ -1,8 +1,8 @@
 package org.uiowa.cs2820.engine.queries;
 
+import java.util.HashSet;
+
 public interface QueryOperator
 {
-
-    public boolean isSatisfiedBy(boolean operand1, boolean operand2);
-
+    public HashSet<String> evaluate(HashSet<String> query1Results, HashSet<String> query2Results);
 }

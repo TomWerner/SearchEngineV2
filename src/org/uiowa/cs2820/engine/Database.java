@@ -2,7 +2,6 @@ package org.uiowa.cs2820.engine;
 
 import java.util.ArrayList;
 
-import org.uiowa.cs2820.engine.queries.FieldIdentifierPair;
 import org.uiowa.cs2820.engine.queries.Queryable;
 
 public interface Database
@@ -13,5 +12,5 @@ public interface Database
 
     public abstract void store(Field field, String identifier); // store an id
     
-    public abstract ArrayList<FieldIdentifierPair> matchQuery(Queryable queryable);
+    public abstract ArrayList<String> matchQuery(Queryable queryable);
 }
