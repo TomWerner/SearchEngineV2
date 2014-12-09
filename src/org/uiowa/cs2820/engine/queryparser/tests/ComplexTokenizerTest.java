@@ -78,8 +78,7 @@ public class ComplexTokenizerTest
         String string = "(\"Term\", \"Term2\")";
         Tokenizer tokenizer = getTokenizer();
         ArrayList<Token> tokens = tokenizer.tokenize(string);
-        for (Token token : tokens)
-            System.out.println(token + " - " + token.getType());
+        
         int i = -1;
         assertEquals("(", tokens.get(++i).getString());
         assertEquals(Token.PAREN_START, tokens.get(i).getType());

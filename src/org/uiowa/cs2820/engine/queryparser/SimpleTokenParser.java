@@ -76,7 +76,7 @@ public class SimpleTokenParser
             }
             else if (token.getType() == Token.QUERY_OPERATOR)
                 stack.push(OperatorFactory.getQueryOperator(token.getString()));
-            else if (token.getType() != Token.QUERY_END && token.getType() != Token.QUERY_START && token.getType() != Token.FIELD_END)
+            else if (token.getType() != Token.FIELD_END)
                 stack.push(token);
 
             index++;

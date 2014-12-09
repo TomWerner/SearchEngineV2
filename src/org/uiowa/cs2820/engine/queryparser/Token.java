@@ -5,8 +5,6 @@ public class Token
     public static final int TERM = 0;
     public static final int FIELD_START = 1;
     public static final int FIELD_END = 2;
-    public static final int QUERY_START = 3;
-    public static final int QUERY_END = 4;
     public static final int FIELD_OPERATOR = 5;
     public static final int QUERY_OPERATOR = 6;
     public static final int PAREN_START = 7;
@@ -47,10 +45,6 @@ public class Token
     			return "Field Start";
     		case FIELD_END:
     			return "Field End";
-    		case QUERY_START:
-    			return "Query Start";
-    		case QUERY_END:
-    			return "Query End";
     		case FIELD_OPERATOR:
     			return "Field Operator";
     		case QUERY_OPERATOR:
