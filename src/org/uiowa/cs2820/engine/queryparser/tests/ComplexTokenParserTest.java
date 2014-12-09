@@ -15,27 +15,7 @@ import org.uiowa.cs2820.engine.queryparser.ParsingException;
 import org.uiowa.cs2820.engine.queryparser.TokenParser;
 
 public class ComplexTokenParserTest extends SimpleBadTokenParserTest
-{
-    @Test
-    public void testNoFieldStart() throws ParsingException
-    {
-    }
-
-    @Test
-    public void testNoFirstTerm() throws ParsingException
-    {
-    }
-
-    @Test
-    public void testNoSecondTerm() throws ParsingException
-    {
-    }
-
-    @Test
-    public void testNoFieldEnd() throws ParsingException
-    {
-    }
-
+{    
     protected Queryable parseString(String query) throws ParsingException
     {
         TokenParser parser = new ComplexTokenParser();

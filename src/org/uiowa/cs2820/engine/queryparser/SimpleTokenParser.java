@@ -1,6 +1,7 @@
 package org.uiowa.cs2820.engine.queryparser;
 
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.Stack;
 
 import org.uiowa.cs2820.engine.Field;
@@ -23,9 +24,16 @@ public class SimpleTokenParser implements TokenParser
 
     public Queryable parseTokens(ArrayList<Token> tokens) throws ParsingException
     {
+        try
+        {
         Stack<Object> stack = createQueryOperatorStack(tokens);
         stack = setupQueryOperatorStack(stack);
         return parseQueryOperatorStack(stack);
+        }
+        catch (EmptyStackException | ClassCastException e)
+        {
+            throw new ParsingException(e);
+        }
     }
 
     protected Stack<Object> setupQueryOperatorStack(Stack<Object> stack)
