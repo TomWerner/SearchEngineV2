@@ -9,36 +9,17 @@ import org.uiowa.cs2820.engine.queries.Query;
 import org.uiowa.cs2820.engine.queries.QueryAnd;
 import org.uiowa.cs2820.engine.queries.QueryOr;
 import org.uiowa.cs2820.engine.queries.Queryable;
-import org.uiowa.cs2820.engine.queryparser.ComplexTokenParser;
+import org.uiowa.cs2820.engine.queryparser.ComplexBadTokenParser;
 import org.uiowa.cs2820.engine.queryparser.ComplexTokenizer;
 import org.uiowa.cs2820.engine.queryparser.ParsingException;
 import org.uiowa.cs2820.engine.queryparser.TokenParser;
 
-public class ComplexStackTokenParserTest extends SimpleTokenParserTest
+public class ComplexBadTokenParserTest extends SimpleBadTokenParserTest
 {
-    @Test
-    public void testNoFieldStart() throws ParsingException
-    {
-    }
-
-    @Test
-    public void testNoFirstTerm() throws ParsingException
-    {
-    }
-
-    @Test
-    public void testNoSecondTerm() throws ParsingException
-    {
-    }
-
-    @Test
-    public void testNoFieldEnd() throws ParsingException
-    {
-    }
 
     protected Queryable parseString(String query) throws ParsingException
     {
-        TokenParser parser = new ComplexTokenParser();
+        TokenParser parser = new ComplexBadTokenParser();
         return parser.parseTokens(new ComplexTokenizer().tokenize(query));
     }
 
@@ -72,7 +53,7 @@ public class ComplexStackTokenParserTest extends SimpleTokenParserTest
         Query left = (Query) parseString(query1);
         DoubleQuery right = (DoubleQuery) parseString(query2);
         DoubleQuery result = (DoubleQuery) parseString(wholeThing);
-        
+                
         assertEquals(left, result.getQuery1());
         assertEquals(right, result.getQuery2());
         assertTrue(result.getOperator() instanceof QueryOr);

@@ -9,7 +9,7 @@ import org.uiowa.cs2820.engine.queryparser.QueryParser;
 import org.uiowa.cs2820.engine.queryparser.SimpleBadTokenParser;
 import org.uiowa.cs2820.engine.queryparser.SimpleTokenizer;
 
-public class SimpleQueryParserTest extends SimpleTokenParserTest
+public class SimpleQueryParserTest extends SimpleBadTokenParserTest
 {
 
     @Override

@@ -8,7 +8,7 @@ import org.uiowa.cs2820.engine.queryparser.QueryParser;
 import org.uiowa.cs2820.engine.queryparser.TokenParser;
 import org.uiowa.cs2820.engine.queryparser.Tokenizer;
 
-public class ComplexStackQueryParserTest extends ComplexStackTokenParserTest
+public class ComplexQueryParserTest extends ComplexTokenParserTest
 {
     protected Queryable parseString(String query) throws ParsingException
     {
