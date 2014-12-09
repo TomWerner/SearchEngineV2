@@ -5,38 +5,60 @@ import java.util.HashSet;
 
 /**
  * This tokenizer allows for parenthesizing input
+ * 
  * @author Tom
- *
+ * 
  */
 public class ComplexTokenizer implements Tokenizer
 {
     private char QUOTE = '\"';
-    private char START_FIELD = '{';
-    private char END_FIELD = '}';
-    private char START_QUERY = '[';
-    private char END_QUERY = ']';
     private char START_PAREN = '(';
     private char END_PAREN = ')';
-    
+
     private HashSet<Character> whitespace = new HashSet<Character>();
-    {{
-        whitespace.add(' ');
-        whitespace.add('.');
-        whitespace.add(',');
-    }}
+    {
+        {
+            whitespace.add(' ');
+            whitespace.add('.');
+            whitespace.add(',');
+        }
+    }
+
+    private HashSet<String> queryOperators = new HashSet<String>();
+    {
+        {
+            queryOperators.add("AND");
+            queryOperators.add("OR");
+        }
+    }
 
     public ComplexTokenizer()
     {
     }
 
-    /* (non-Javadoc)
-     * @see org.uiowa.cs2820.engine.queryparser.Tokenizer#tokenize(java.lang.String)
+    @Override
+    public boolean canHandleParenthesis()
+    {
+        return true;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.uiowa.cs2820.engine.queryparser.Tokenizer#tokenize(java.lang.String)
      */
     @Override
     public ArrayList<Token> tokenize(String string)
     {
         ArrayList<Token> tokens = new ArrayList<Token>();
-        tokens.add(new Token(""+ START_PAREN, Token.PAREN_START)); // The entire thing should be enclosed in parenthesis
+        tokens.add(new Token("" + START_PAREN, Token.PAREN_START)); // The
+                                                                    // entire
+                                                                    // thing
+                                                                    // should be
+                                                                    // enclosed
+                                                                    // in
+                                                                    // parenthesis
         StringBuffer currentToken = new StringBuffer();
 
         for (int i = 0; i < string.length(); i++)
@@ -54,56 +76,78 @@ public class ComplexTokenizer implements Tokenizer
                 i = k;
                 tokens.add(new Token(term.toString(), Token.TERM));
             }
-            else if (current == START_FIELD)
-            {
-                if (currentToken.length() != 0)
-                {
-                    tokens.add(new Token(currentToken.toString(), Token.FIELD_OPERATOR));
-                    currentToken = new StringBuffer();
-                }
-                tokens.add(new Token("" + current, Token.FIELD_START));
-            }
-            else if (current == END_FIELD)
-            {
-                tokens.add(new Token("" + current, Token.FIELD_END));
-                currentToken = new StringBuffer();
-            }
-            else if (current == START_QUERY)
-            {
-                if (currentToken.length() != 0)
-                {
-                    tokens.add(new Token(currentToken.toString(), Token.QUERY_OPERATOR));
-                    currentToken = new StringBuffer();
-                }
-                tokens.add(new Token("" + current, Token.QUERY_START));
-            }
-            else if (current == END_QUERY)
-            {
-                tokens.add(new Token("" + current, Token.QUERY_END));
-                currentToken = new StringBuffer();
-            }
+            // else if (current == START_FIELD)
+            // {
+            // if (currentToken.length() != 0)
+            // {
+            // tokens.add(new Token(currentToken.toString(),
+            // Token.FIELD_OPERATOR));
+            // currentToken = new StringBuffer();
+            // }
+            // tokens.add(new Token("" + current, Token.FIELD_START));
+            // }
+            // else if (current == END_FIELD)
+            // {
+            // tokens.add(new Token("" + current, Token.FIELD_END));
+            // currentToken = new StringBuffer();
+            // }
             else if (current == START_PAREN)
             {
-                if (currentToken.length() != 0)
+                if (getNextNonWhitespaceCharacter(string, i) == QUOTE)
                 {
-                    tokens.add(new Token(currentToken.toString(), Token.QUERY_OPERATOR));
-                    currentToken = new StringBuffer();
+                    if (currentToken.length() != 0)
+                        tokens.add(new Token(currentToken.toString(), Token.FIELD_OPERATOR));
+                    tokens.add(new Token("" + current, Token.FIELD_START));
                 }
-                tokens.add(new Token("" + current, Token.PAREN_START));
+                else
+                {
+                    if (currentToken.length() != 0)
+                        tokens.add(new Token(currentToken.toString(), Token.QUERY_OPERATOR));
+                    tokens.add(new Token("" + current, Token.PAREN_START));
+                }
+                currentToken = new StringBuffer();
             }
             else if (current == END_PAREN)
             {
-                tokens.add(new Token("" + current, Token.PAREN_END));
+                if (getPreviousNonWhitespaceCharacter(string, i) == QUOTE)
+                    tokens.add(new Token("" + current, Token.FIELD_END));
+                else
+                    tokens.add(new Token("" + current, Token.PAREN_END));
                 currentToken = new StringBuffer();
             }
             else if (!whitespace.contains(current))
             {
-                currentToken.append(current);
+                currentToken.append(Character.toUpperCase(current));
+                if (queryOperators.contains(currentToken.toString()))
+                {
+                    tokens.add(new Token(currentToken.toString(), Token.QUERY_OPERATOR));
+                    currentToken = new StringBuffer();
+                }
             }
         }
-        tokens.add(new Token(""+ END_PAREN, Token.PAREN_END)); // The entire thing should be enclosed in parenthesis
-
+        tokens.add(new Token("" + END_PAREN, Token.PAREN_END)); // The entire
+                                                                // thing should
+                                                                // be enclosed
+                                                                // in
+                                                                // parenthesis
         return tokens;
     }
+    
+    private char getPreviousNonWhitespaceCharacter(String string, int currentPosition)
+    {
+        for (int i = currentPosition - 1; i >= 0; i--)
+            if (!whitespace.contains(string.charAt(i)))
+                return string.charAt(i);
+        return 0;
+    }
+
+    private char getNextNonWhitespaceCharacter(String string, int currentPosition)
+    {
+        for (int i = currentPosition + 1; i < string.length(); i++)
+            if (!whitespace.contains(string.charAt(i)))
+                return string.charAt(i);
+        return 0;
+    }
+    
 
 }

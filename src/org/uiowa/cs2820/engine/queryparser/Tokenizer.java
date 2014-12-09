@@ -7,4 +7,6 @@ public interface Tokenizer
 
     public abstract ArrayList<Token> tokenize(String string);
 
+    public abstract boolean canHandleParenthesis();
+
 }

@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ ComplexTokenizerTest.class, ComplexTokenParserTest.class, SimpleQueryParserTest.class, SimpleTokenizerTest.class, SimpleTokenParserTest.class })
+@SuiteClasses({ ComplexTokenParserTest.class, ComplexTokenizerTest.class, ComplexQueryParserTest.class })
 public class AllTests
 {
 

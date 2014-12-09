@@ -1,174 +1,123 @@
 package org.uiowa.cs2820.engine.queryparser;
 
 import java.util.ArrayList;
+import java.util.EmptyStackException;
+import java.util.Stack;
 
 import org.uiowa.cs2820.engine.Field;
+import org.uiowa.cs2820.engine.queries.DoubleQuery;
 import org.uiowa.cs2820.engine.queries.FieldEquals;
 import org.uiowa.cs2820.engine.queries.FieldOperator;
-import org.uiowa.cs2820.engine.queries.DoubleQuery;
 import org.uiowa.cs2820.engine.queries.OperatorFactory;
 import org.uiowa.cs2820.engine.queries.Query;
 import org.uiowa.cs2820.engine.queries.QueryOperator;
 import org.uiowa.cs2820.engine.queries.QueryOr;
 import org.uiowa.cs2820.engine.queries.Queryable;
 
-public class SimpleTokenParser implements TokenParser
+public class SimpleTokenParser
 {
-    public SimpleTokenParser()
-    {
-    }
-    
-    /* (non-Javadoc)
-     * @see org.uiowa.cs2820.engine.queryparser.TokenParser#parseTokens(java.util.ArrayList)
-     */
-    @Override
     public Queryable parseTokens(ArrayList<Token> tokens) throws ParsingException
     {
-        ArrayList<Queryable> queries = new ArrayList<Queryable>();
-        
-        for (Token token : tokens)
-            if (token.getType() == Token.PAREN_START || token.getType() == Token.PAREN_END)
-                throw new UnsupportedOperationException("SimpleTokenParser doesn't handle parenthesized expressions");
+        try
+        {
+        Stack<Object> stack = createQueryOperatorStack(tokens);
+        stack = setupQueryOperatorStack(stack);
+        return parseQueryOperatorStack(stack);
+        }
+        catch (EmptyStackException | ClassCastException e)
+        {
+            throw new ParsingException(e);
+        }
+    }
+
+    protected Stack<Object> setupQueryOperatorStack(Stack<Object> stack)
+    {
+        // Reverse the stack for the order
+        Stack<Object> reverse = new Stack<Object>();
+        while (!stack.isEmpty())
+            reverse.push(stack.pop());
+        return reverse;
+    }
+
+    protected Stack<Object> createQueryOperatorStack(ArrayList<Token> tokens)
+    {
+        Stack<Object> stack = new Stack<Object>();
 
         int index = 0;
-        try
+        while (index < tokens.size())
         {
-            if (tokens.get(index).getType() != Token.QUERY_START) // Only one query
-            {
-                Query query = parseSingleQuery(0, tokens.size() - 1, tokens);
-                queries.add(query);
-            }
-            else
-            {
-                // Now we find the first query
-                // Since index is at the QUERY_START, index + 1 is start
-                expectedTokenFound(Token.QUERY_START, index, tokens);
-                int endPosition = findNextInstance(Token.QUERY_END, tokens, index + 1);
-                Query query = parseSingleQuery(index + 1, endPosition - 1, tokens);
-                index = endPosition;
-                queries.add(query);
+            Token token = tokens.get(index);
 
-                // There are still tokens left
-                while (index < tokens.size() - 1)
+            if (token.getType() == Token.FIELD_END)
+            {
+                Stack<Object> substack = new Stack<Object>();
+
+                while (!(stack.peek() instanceof Token && ((Token) stack.peek()).getType() == Token.FIELD_START))
+                    substack.push(stack.pop());
+
+                if (!stack.isEmpty() && stack.peek() instanceof Token && ((Token) stack.peek()).getType() == Token.FIELD_START)
+                    stack.pop();
+
+                if (!stack.isEmpty() && stack.peek() instanceof Token && ((Token) stack.peek()).getType() == Token.FIELD_OPERATOR)
+                    substack.push(stack.pop());
+
+                Query query = buildQuery(substack);
+                stack.push(query);
+            }
+            else if (token.getType() == Token.FIELD_START || token.getType() == Token.FIELD_OPERATOR)
+            {
+                if (stack.peek() instanceof Queryable)
                 {
-                    // Advance to the next token
-                    index++;
-
-                    // Check to see if there is a specified query
-                    QueryOperator queryOp = new QueryOr();
-                    if (tokens.get(index).getType() == Token.QUERY_OPERATOR)
-                    {
-                        queryOp = OperatorFactory.getQueryOperator(tokens.get(index).getString());
-                        index++;
-                    }
-
-                    // If we're not on a query, something went wrong
-                    expectedTokenFound(Token.QUERY_START, index, tokens);
-                    endPosition = findNextInstance(Token.QUERY_END, tokens, index + 1);
-                    query = parseSingleQuery(index + 1, endPosition - 1, tokens);
-                    index = endPosition;
-                    queries.set(0, new DoubleQuery(queries.get(0), query, queryOp));
+                    stack.push(new QueryOr());
+                    stack.push(token);
                 }
+                else
+                    stack.push(token);
             }
-        }
-        catch (IndexOutOfBoundsException e)
-        {
-            e.printStackTrace();
-            throw createParseError("Index out of bounds", index, tokens);
-        }
+            else if (token.getType() == Token.QUERY_OPERATOR)
+                stack.push(OperatorFactory.getQueryOperator(token.getString()));
+            else if (token.getType() != Token.QUERY_END && token.getType() != Token.QUERY_START && token.getType() != Token.FIELD_END)
+                stack.push(token);
 
-        // TODO: Fix this
-        if (queries.size() == 1)
-            return queries.get(0);
-        else
-            return null; //Something went wrong, fix this
+            index++;
+        }
+        return stack;
     }
 
-    /**
-     * 
-     * @param start
-     *            First index of the query, excluding the QUERY_START token
-     * @param stop
-     *            Last index of the query, excluding the QUERY_STOP token
-     * @param tokens
-     *            Full list of tokens
-     * @return The query created from the tokens
-     * 
-     *         Example: Tokens = [ "[", "equals", "(", "name", "value", ")", "]"
-     *         ] The function call would be parseSingleQuery(1, 5, tokens)
-     * @throws ParsingException
-     */
-    protected Query parseSingleQuery(int start, int stop, ArrayList<Token> tokens) throws ParsingException
+    protected Queryable parseQueryOperatorStack(Stack<Object> stack)
     {
-        int index = start;
-        try
+        // Now we have all our queries
+        if (stack.size() == 1)
+            return (Queryable) stack.pop();
+        else
         {
-            FieldOperator fieldOp = new FieldEquals();
-            String fieldName = null;
-            String fieldValue = null;
+            Queryable q1 = (Queryable) stack.pop();
+            QueryOperator qOp = new QueryOr();
+            if (stack.peek() instanceof QueryOperator)
+                qOp = (QueryOperator) stack.pop();
+            Queryable q2 = (Queryable) stack.pop();
 
-            // If an operator is specified
-            if (tokens.get(index).getType() == Token.FIELD_OPERATOR)
+            DoubleQuery query = new DoubleQuery(q1, q2, qOp);
+
+            while (!stack.isEmpty())
             {
-                fieldOp = OperatorFactory.getFieldOperator(tokens.get(index).getString());
-                index++;
+                qOp = new QueryOr();
+                if (stack.peek() instanceof QueryOperator)
+                    qOp = (QueryOperator) stack.pop();
+                q2 = (Query) stack.pop();
+                query = new DoubleQuery(query, q2, qOp);
             }
 
-            // If a field doesn't follow something went wrong
-            if (expectedTokenFound(Token.FIELD_START, index, tokens))
-                index++;
-
-            // If a term isn't in the field something went wrong
-            if (expectedTokenFound(Token.TERM, index, tokens))
-            {
-                fieldName = tokens.get(index).getString();
-                index++;
-            }
-
-            // If a term isn't in the field something went wrong
-            if (expectedTokenFound(Token.TERM, index, tokens))
-            {
-                fieldValue = tokens.get(index).getString();
-                index++;
-            }
-
-            // If the field doesn't end something went wrong
-            expectedTokenFound(Token.FIELD_END, index, tokens);
-
-            // If there are still tokens left something went wrong
-            if (index != stop)
-                throw createParseError("Unexpected token after field end", index, tokens);
-
-            // We made it!
-            Query query = new Query(new Field(fieldName, fieldValue), fieldOp);
             return query;
         }
-        catch (IndexOutOfBoundsException e)
-        {
-            throw createParseError("Index out of bounds", index, tokens);
-        }
     }
 
-    protected boolean expectedTokenFound(int tokenType, int index, ArrayList<Token> tokens) throws ParsingException 
+    private Query buildQuery(Stack<Object> substack)
     {
-        if (tokens.get(index).getType() != tokenType)
-            throw createParseError("Expected " + Token.getTypeName(tokenType), index, tokens);
-        return true;
-    }
+        FieldOperator fieldOp = new FieldEquals();
+        if (((Token) substack.peek()).getType() == Token.FIELD_OPERATOR)
+            fieldOp = OperatorFactory.getFieldOperator(((Token) substack.pop()).getString());
 
-    protected ParsingException createParseError(String string, int index, ArrayList<Token> tokens)
-    {
-        String message = string;
-        message += "\nTokens: " + tokens;
-        message += "\nError at: " + index;
-        return new ParsingException(message);
-    }
-    
-    protected int findNextInstance(int tokenType, ArrayList<Token> tokens, int startIndex)
-    {
-        // Find the end
-        while (tokens.get(startIndex).getType() != tokenType)
-            startIndex++;
-        return startIndex;
+        return new Query(new Field(((Token) substack.pop()).getString(), ((Token) substack.pop()).getString()), fieldOp);
     }
 }
