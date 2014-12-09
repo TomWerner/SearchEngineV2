@@ -9,7 +9,7 @@ import org.uiowa.cs2820.engine.queries.Query;
 import org.uiowa.cs2820.engine.queries.QueryAnd;
 import org.uiowa.cs2820.engine.queries.QueryOr;
 import org.uiowa.cs2820.engine.queries.Queryable;
-import org.uiowa.cs2820.engine.queryparser.ComplexStackTokenParser;
+import org.uiowa.cs2820.engine.queryparser.ComplexTokenParser;
 import org.uiowa.cs2820.engine.queryparser.ComplexTokenizer;
 import org.uiowa.cs2820.engine.queryparser.ParsingException;
 import org.uiowa.cs2820.engine.queryparser.TokenParser;
@@ -38,7 +38,7 @@ public class ComplexStackTokenParserTest extends SimpleTokenParserTest
 
     protected Queryable parseString(String query) throws ParsingException
     {
-        TokenParser parser = new ComplexStackTokenParser();
+        TokenParser parser = new ComplexTokenParser();
         return parser.parseTokens(new ComplexTokenizer().tokenize(query));
     }
 

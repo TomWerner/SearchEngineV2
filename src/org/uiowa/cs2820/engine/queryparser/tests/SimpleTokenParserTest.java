@@ -12,7 +12,7 @@ import org.uiowa.cs2820.engine.queries.QueryAnd;
 import org.uiowa.cs2820.engine.queries.QueryOr;
 import org.uiowa.cs2820.engine.queries.Queryable;
 import org.uiowa.cs2820.engine.queryparser.ParsingException;
-import org.uiowa.cs2820.engine.queryparser.SimpleTokenParser;
+import org.uiowa.cs2820.engine.queryparser.SimpleBadTokenParser;
 import org.uiowa.cs2820.engine.queryparser.SimpleTokenizer;
 import org.uiowa.cs2820.engine.queryparser.TokenParser;
 
@@ -199,7 +199,7 @@ public class SimpleTokenParserTest
 
     protected Queryable parseString(String query) throws ParsingException
     {
-        TokenParser parser = new SimpleTokenParser();
+        TokenParser parser = new SimpleBadTokenParser();
         return parser.parseTokens(new SimpleTokenizer().tokenize(query));
     }
 }
