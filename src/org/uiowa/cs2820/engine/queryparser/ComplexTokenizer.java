@@ -76,21 +76,6 @@ public class ComplexTokenizer implements Tokenizer
                 i = k;
                 tokens.add(new Token(term.toString(), Token.TERM));
             }
-            // else if (current == START_FIELD)
-            // {
-            // if (currentToken.length() != 0)
-            // {
-            // tokens.add(new Token(currentToken.toString(),
-            // Token.FIELD_OPERATOR));
-            // currentToken = new StringBuffer();
-            // }
-            // tokens.add(new Token("" + current, Token.FIELD_START));
-            // }
-            // else if (current == END_FIELD)
-            // {
-            // tokens.add(new Token("" + current, Token.FIELD_END));
-            // currentToken = new StringBuffer();
-            // }
             else if (current == START_PAREN)
             {
                 if (getNextNonWhitespaceCharacter(string, i) == QUOTE)
