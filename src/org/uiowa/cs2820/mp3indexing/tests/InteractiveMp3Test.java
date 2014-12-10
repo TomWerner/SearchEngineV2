@@ -39,7 +39,7 @@ public class InteractiveMp3Test
             if (!input.equals("done"))
             {
                 ArrayList<String> files = getFilesInFolder(input);
-                for (int i = 0; i < files.size() && i < 1000; i++)
+                for (int i = 0; i < files.size(); i++)
                 {
                     String file = files.get(i);
                     System.out.println(i + " - " + file);
