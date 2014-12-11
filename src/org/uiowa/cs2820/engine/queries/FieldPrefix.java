@@ -10,6 +10,14 @@ public class FieldPrefix implements FieldOperator
 	}
     public Boolean compare(Field A, Field B)
     {
-    	return A.equals(B);
+    	if ( A.getFieldName().equals(B.getFieldName()) )
+    	{
+    		int prefixLength = A.getFieldValue().toString().length();
+    		if ( A.toString().substring(0,prefixLength).equals(B.toString()))
+    		{
+    			return true;
+    		}
+    	}
+    	return false;
     }
 }

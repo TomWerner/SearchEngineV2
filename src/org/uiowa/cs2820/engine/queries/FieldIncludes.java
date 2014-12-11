@@ -8,6 +8,13 @@ public class FieldIncludes implements FieldOperator
 	}
     public Boolean compare(Field A, Field B)
     {
-    	return A.equals(B);
+    	if ( A.getFieldName().equals(B.getFieldName()) )
+    	{
+    		if ( A.getFieldValue().toString().contains(B.getFieldValue().toString()) )
+    		{
+    			return true;
+    		}
+    	}
+    	return false;
     }
 }
