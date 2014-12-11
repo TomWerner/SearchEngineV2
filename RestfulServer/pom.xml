@@ -3,11 +3,10 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>edu.iowa</groupId>
-    <artifactId>form-server</artifactId>
+    <groupId>org.uiowa.cs2820.engine</groupId>
+    <artifactId>RestfulServer</artifactId>
     <packaging>jar</packaging>
     <version>1.0-SNAPSHOT</version>
-    <name>form-server</name>
 
     <dependencyManagement>
         <dependencies>
@@ -78,4 +77,5 @@
         <jersey.version>2.12</jersey.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+    <name>RestfulServer</name>
 </project>

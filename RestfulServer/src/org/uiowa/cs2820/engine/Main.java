@@ -1,4 +1,4 @@
-package edu.iowa;
+package org.uiowa.cs2820.engine;
 
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
@@ -23,4 +23,3 @@ public class Main {
         server.stop();
     }
 }
-
