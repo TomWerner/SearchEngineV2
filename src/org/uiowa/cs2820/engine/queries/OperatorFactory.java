@@ -14,6 +14,8 @@ public class OperatorFactory
         	return new FieldIncludes();
         else if (operator.equalsIgnoreCase("starts with") || operator.equalsIgnoreCase("prefix"))
         	return new FieldPrefix();
+        else if (operator.equalsIgnoreCase("ends with") || operator.equalsIgnoreCase("postfix"))
+        	return new FieldPostfix();
         
         return null;
     }
