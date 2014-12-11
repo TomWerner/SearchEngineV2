@@ -12,8 +12,7 @@ public class FieldPrefix implements FieldOperator
     {
     	if ( A.getFieldName().equals(B.getFieldName()) )
     	{
-    		int prefixLength = A.getFieldValue().toString().length();
-    		if ( A.toString().substring(0,prefixLength).equals(B.toString()))
+    		if ( A.getFieldValue().toString().endsWith(B.getFieldValue().toString()))
     		{
     			return true;
     		}

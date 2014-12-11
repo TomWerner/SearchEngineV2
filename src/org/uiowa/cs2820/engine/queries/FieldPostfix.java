@@ -13,8 +13,7 @@ public class FieldPostfix implements FieldOperator
 	{
 		if (A.getFieldName().equals(B.getFieldName()))
 		{
-			int postfixLength = A.getFieldValue().toString().length();
-    		if ( A.toString().substring(postfixLength).equals(B.toString()))
+    		if ( A.getFieldValue().toString().startsWith(B.getFieldValue().toString()))
     		{
     			return true;
     		}
