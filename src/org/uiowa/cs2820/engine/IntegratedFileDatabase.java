@@ -2,6 +2,8 @@ package org.uiowa.cs2820.engine;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 
 import org.uiowa.cs2820.engine.databases.AVLFieldDatabase;
 import org.uiowa.cs2820.engine.databases.FieldDatabase;
@@ -9,6 +11,7 @@ import org.uiowa.cs2820.engine.databases.FieldFileNode;
 import org.uiowa.cs2820.engine.databases.IdentifierDatabase;
 import org.uiowa.cs2820.engine.databases.ValueFileNode;
 import org.uiowa.cs2820.engine.fileoperations.RAFile;
+import org.uiowa.cs2820.engine.queries.Queryable;
 
 /**
  * This class combines the FieldDatabase and IdentiferDatabase to implement the
@@ -88,9 +91,28 @@ public class IntegratedFileDatabase implements Database
         }
     }
     
+    public ArrayList<String> matchQuery(Queryable queryable)
+    {
+        ArrayList<String> result = new ArrayList<String>();
+        
+        queryable.resetQuery();
+        Iterator<FieldFileNode> iter = fieldDB.iterator();
+        while (iter.hasNext())
+        {
+            FieldFileNode node = iter.next();
+            queryable.isSatisfiedBy(node, identDB);
+        }
+        
+        HashSet<String> identifiers = queryable.evaluate();
+        for (String string : identifiers)
+            result.add(string);
+        
+        return result;
+    }
+    
     public String toString()
     {
-        return fieldDB.toString();
+        return fieldDB.toString() + "\n\n" + identDB.toString();
     }
 
 }
