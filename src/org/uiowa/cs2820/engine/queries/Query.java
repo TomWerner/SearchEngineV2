@@ -28,7 +28,7 @@ public class Query implements Queryable
     @Override
     public void isSatisfiedBy(FieldFileNode node, IdentifierDatabase identDB)
     {
-        if (operator.isSatisfiedBy(field, node.getField()))
+        if (operator.compare(field, node.getField()))
             identifierSet.addAll(identDB.getAllIdentifiers(node.getHeadOfLinkedListPosition()));
     }
 

@@ -10,7 +10,7 @@ public class FieldEquals implements FieldOperator
     }
 
     @Override
-    public boolean isSatisfiedBy(Field field, Field testField)
+    public Boolean compare(Field field, Field testField)
     {
         return field.equals(testField);
     }
