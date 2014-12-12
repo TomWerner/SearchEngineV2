@@ -106,5 +106,22 @@ FieldOperator op;
 		B = new Field("book","The");
 		assertFalse(op.compare(A, B));
 	}
+	@Test
+	public void FieldFuzzySearchreturnsTrue()
+	{
+		op = new FieldFuzzySearch();
+		A = new Field("book","The Hobbit");
+		B = new Field("book","The Jobbit");
+		assertTrue(op.compare(A, B));
+	}
+	@Test
+	public void FieldFuzzySearchreturnsFalse()
+	{
+		op = new FieldFuzzySearch();
+		A = new Field("book","The Hobbit");
+		B = new Field("book","The Jibber");
+		assertFalse(op.compare(A, B));
+	}
+	
 	
 }
