@@ -1,8 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="RestfulServer/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="lib/mp3agic-0.8.3-SNAPSHOT.jar" sourcepath="lib/mp3agic-0.8.3-SNAPSHOT-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Users/cbierman/.m2/repository/javax/ws/rs/javax.ws.rs-api/2.0.1/javax.ws.rs-api-2.0.1.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.groupId" value="javax.ws.rs"/>
+			<attribute name="maven.artifactId" value="javax.ws.rs-api"/>
+			<attribute name="maven.version" value="2.0.1"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="/Users/cbierman/.m2/repository/org/glassfish/jersey/core/jersey-common/2.13/jersey-common-2.13.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.groupId" value="org.glassfish.jersey.core"/>
+			<attribute name="maven.artifactId" value="jersey-common"/>
+			<attribute name="maven.version" value="2.13"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="/Users/cbierman/.m2/repository/org/glassfish/grizzly/grizzly-http-server/2.3.16/grizzly-http-server-2.3.16.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.groupId" value="org.glassfish.grizzly"/>
+			<attribute name="maven.artifactId" value="grizzly-http-server"/>
+			<attribute name="maven.version" value="2.3.16"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="/Users/cbierman/.m2/repository/org/glassfish/jersey/containers/jersey-container-grizzly2-http/2.13/jersey-container-grizzly2-http-2.13.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.groupId" value="org.glassfish.jersey.containers"/>
+			<attribute name="maven.artifactId" value="jersey-container-grizzly2-http"/>
+			<attribute name="maven.version" value="2.13"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/Users/cbierman/.m2/repository/org/glassfish/jersey/core/jersey-server/2.13/jersey-server-2.13.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="maven.groupId" value="org.glassfish.jersey.core"/>
+			<attribute name="maven.artifactId" value="jersey-server"/>
+			<attribute name="maven.version" value="2.13"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
