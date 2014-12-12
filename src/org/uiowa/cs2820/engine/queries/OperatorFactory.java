@@ -16,6 +16,8 @@ public class OperatorFactory
         	return new FieldPrefix();
         else if (operator.equalsIgnoreCase("ends with") || operator.equalsIgnoreCase("postfix"))
         	return new FieldPostfix();
+        else if (operator.equals("~"))
+        	return new FieldFuzzySearch();
         
         return null;
     }
