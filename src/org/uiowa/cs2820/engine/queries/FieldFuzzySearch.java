@@ -13,6 +13,10 @@ public class FieldFuzzySearch implements FieldOperator
 			fuzzLevel = 0;
 		fuzz = fuzzLevel;
 	}
+	public int getFuzz()
+	{
+		return fuzz;
+	}
 	public String toString()
 	{
 		return("~"+fuzz);
@@ -50,14 +54,12 @@ public class FieldFuzzySearch implements FieldOperator
 						int ins = 1 + LevMatrix[i][j-1];
 						int sub = 1 + LevMatrix[i-1][j-1];
 						int min = Math.min(Math.min(del,ins), sub);
-						System.out.println(min);
 						LevMatrix[i][j] = min;
 					}
 				}
 			}
 			if (LevMatrix[textLen-1][patternLen-1] <= fuzz)
 			{
-				System.out.println(LevMatrix[textLen-1][patternLen-1]);
 				return true;
 			}
 		}

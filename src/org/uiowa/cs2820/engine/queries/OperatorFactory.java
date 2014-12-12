@@ -18,7 +18,7 @@ public class OperatorFactory
         	return new FieldPostfix();
         else if (operator.contains("~"))
         {
-        	int fuzzLevel = Integer.parseInt(operator.split("~")[0]);
+        	int fuzzLevel = Integer.parseInt(operator.split("~")[1]);
         	FieldFuzzySearch FFS = new FieldFuzzySearch();
         	FFS.setFuzz(fuzzLevel);
         	return FFS;

@@ -107,21 +107,61 @@ FieldOperator op;
 		assertFalse(op.compare(A, B));
 	}
 	@Test
-	public void FieldFuzzySearchreturnsTrue()
+	public void FieldFuzzySearchreturnsTrue0()
 	{
-		op = new FieldFuzzySearch();
+		FieldFuzzySearch op = new FieldFuzzySearch();
+		op.setFuzz(1);
 		A = new Field("book","The Hobbit");
 		B = new Field("book","The Jobbit");
 		assertTrue(op.compare(A, B));
 	}
+	public void FieldFuzzySearchreturnsTrue1()
+	{
+		FieldFuzzySearch op = new FieldFuzzySearch();
+		op.setFuzz(0);
+		A = new Field("book","The Hobbit");
+		B = new Field("book","The Hobbit");
+		assertTrue(op.compare(A, B));
+	}
+	public void FieldFuzzySearchreturnsTrue2()
+	{
+		FieldFuzzySearch op = new FieldFuzzySearch();
+		op.setFuzz(10);
+		A = new Field("book","ABC");
+		B = new Field("book",";ae132fe f");
+		assertTrue(op.compare(A, B));
+	}
+	public void FieldFuzzySearchreturnsFalse0()
+	{
+		FieldFuzzySearch op = new FieldFuzzySearch();
+		op.setFuzz(0);
+		A = new Field("book","The Hobbit");
+		B = new Field("book","The Jobbit");
+		assertFalse(op.compare(A, B));
+	}
 	@Test
-	public void FieldFuzzySearchreturnsFalse()
+	public void FieldFuzzySearchreturnsFalse1()
 	{
 		op = new FieldFuzzySearch();
 		A = new Field("book","The Hobbit");
 		B = new Field("book","The Jibber");
 		assertFalse(op.compare(A, B));
 	}
-	
+	public void FieldFuzzySearchreturnsFalse2()
+	{
+		FieldFuzzySearch op = new FieldFuzzySearch();
+		op.setFuzz(3);
+		A = new Field("book","The Hobbit");
+		B = new Field("book","Treasure Island");
+		assertFalse(op.compare(A, B));
+	}
+	public void FieldFuzzySearchreturnsFalse3()
+	{
+		FieldFuzzySearch op = new FieldFuzzySearch();
+		op.setFuzz(1);
+		A = new Field("book","The Hobbit");
+		B = new Field("book","The Rabbit");
+		assertFalse(op.compare(A, B));
+	}
 	
 }

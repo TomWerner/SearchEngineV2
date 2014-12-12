@@ -50,11 +50,19 @@ public class OperatorFactoryTest {
 		FieldOperator opClass = OperatorFactory.getFieldOperator(operator);
 		assertTrue(opClass instanceof FieldPostfix);
 	}
+	@Test
 	public void getFieldOperatorReturnsFieldFuzzySearch() 
 	{
-		String operator = "~";
+		String operator = "~1";
 		FieldOperator opClass = OperatorFactory.getFieldOperator(operator);
 		assertTrue(opClass instanceof FieldFuzzySearch);
+	}
+	@Test
+	public void getFieldOperatorFieldFuzzySearchParsedCorrectly() 
+	{
+		String operator = "~3";
+		FieldFuzzySearch opClass = (FieldFuzzySearch)OperatorFactory.getFieldOperator(operator);
+		assertTrue(opClass.getFuzz() == 3);
 	}
 	@Test
 	public void getFieldOperatorReturnsNull() 
