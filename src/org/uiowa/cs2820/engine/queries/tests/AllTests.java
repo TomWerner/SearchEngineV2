@@ -5,7 +5,7 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
-@SuiteClasses({ FieldOperatorTest.class, OperatorFactoryTest.class })
+@SuiteClasses({ FieldOperatorTest.class, OperatorFactoryTest.class, QueryParserFieldOperatorIntegrationTest.class })
 public class AllTests
 {
 

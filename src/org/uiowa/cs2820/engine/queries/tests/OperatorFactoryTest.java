@@ -39,14 +39,14 @@ public class OperatorFactoryTest {
 	@Test
 	public void getFieldOperatorReturnsFieldPrefix() 
 	{
-		String operator = "starts with";
+		String operator = "startswith";
 		FieldOperator opClass = OperatorFactory.getFieldOperator(operator);
 		assertTrue(opClass instanceof FieldPrefix);
 	}
 	@Test
 	public void getFieldOperatorReturnsFieldPostfix() 
 	{
-		String operator = "ends with";
+		String operator = "endswith";
 		FieldOperator opClass = OperatorFactory.getFieldOperator(operator);
 		assertTrue(opClass instanceof FieldPostfix);
 	}

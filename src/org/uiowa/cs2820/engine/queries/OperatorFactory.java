@@ -6,15 +6,15 @@ public class OperatorFactory
     { 
         if (operator.equalsIgnoreCase("equals") || operator.equalsIgnoreCase("equal"))
             return new FieldEquals();
-        else if (operator.equalsIgnoreCase("greater than") || operator.equals(">"))
+        else if (operator.equalsIgnoreCase("greaterthan") || operator.equals(">"))
         	return new FieldGreaterThan();
-        else if (operator.equalsIgnoreCase("lesser than") || operator.equals("<"))
+        else if (operator.equalsIgnoreCase("lesserthan") || operator.equals("<"))
         	return new FieldLessThan();
         else if (operator.equalsIgnoreCase("includes"))
         	return new FieldIncludes();
-        else if (operator.equalsIgnoreCase("starts with") || operator.equalsIgnoreCase("prefix"))
+        else if (operator.equalsIgnoreCase("startswith") || operator.equalsIgnoreCase("prefix"))
         	return new FieldPrefix();
-        else if (operator.equalsIgnoreCase("ends with") || operator.equalsIgnoreCase("postfix"))
+        else if (operator.equalsIgnoreCase("endswith") || operator.equalsIgnoreCase("postfix"))
         	return new FieldPostfix();
         else if (operator.contains("~"))
         {
