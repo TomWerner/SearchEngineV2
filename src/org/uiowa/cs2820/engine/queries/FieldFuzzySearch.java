@@ -6,11 +6,11 @@ import org.uiowa.cs2820.engine.Field;
 
 public class FieldFuzzySearch implements FieldOperator
 {
-	int fuzz = 3;
+	int fuzz = 0;
 	public void setFuzz(int fuzzLevel)
 	{
 		if (fuzzLevel < 0)
-			fuzz = 0;
+			fuzzLevel = 0;
 		fuzz = fuzzLevel;
 	}
 	public String toString()
@@ -19,9 +19,6 @@ public class FieldFuzzySearch implements FieldOperator
 	}
 	public Boolean compare(Field A, Field B)
 	{
-		
-		
-		
 		if (A.getFieldName().equalsIgnoreCase(B.getFieldName()))
 		{
 			String text = A.getFieldValue().toString();
