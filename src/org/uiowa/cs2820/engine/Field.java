@@ -43,7 +43,7 @@ public class Field implements Comparable<Field>
     @Override
     public int compareTo(Field o)
     {
-        if (fieldName.equals(o.fieldName))
+        if (fieldName.equalsIgnoreCase(o.fieldName))
         {
             return ((Comparable)value).compareTo(o.value);
         }
