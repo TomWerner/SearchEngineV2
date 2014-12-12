@@ -6,7 +6,7 @@ import org.uiowa.cs2820.engine.Field;
 
 public class FieldFuzzySearch implements FieldOperator
 {
-	int fuzz = 0;
+	private int fuzz = 0;
 	public void setFuzz(int fuzzLevel)
 	{
 		if (fuzzLevel < 0)
