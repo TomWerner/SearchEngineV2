@@ -6,14 +6,21 @@ import org.uiowa.cs2820.engine.Field;
 
 public class FieldFuzzySearch implements FieldOperator
 {
+	int fuzz = 3;
+	public void setFuzz(int fuzzLevel)
+	{
+		if (fuzzLevel < 0)
+			fuzz = 0;
+		fuzz = fuzzLevel;
+	}
 	public String toString()
 	{
-		return("~");
+		return("~"+fuzz);
 	}
 	public Boolean compare(Field A, Field B)
 	{
-		// Set to 3 for testing
-		int fuzz = 3;
+		
+		
 		
 		if (A.getFieldName().equalsIgnoreCase(B.getFieldName()))
 		{
