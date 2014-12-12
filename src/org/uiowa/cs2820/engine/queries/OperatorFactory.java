@@ -16,9 +16,13 @@ public class OperatorFactory
         	return new FieldPrefix();
         else if (operator.equalsIgnoreCase("ends with") || operator.equalsIgnoreCase("postfix"))
         	return new FieldPostfix();
-        else if (operator.equals("~"))
-        	return new FieldFuzzySearch();
-        
+        else if (operator.contains("~"))
+        {
+        	int fuzzLevel = Integer.parseInt(operator.split("~")[0]);
+        	FieldFuzzySearch FFS = new FieldFuzzySearch();
+        	FFS.setFuzz(fuzzLevel);
+        	return FFS;
+        }
         return null;
     }
 
