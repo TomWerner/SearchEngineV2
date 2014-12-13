@@ -1,6 +1,7 @@
 package org.uiowa.cs2820.engine;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
@@ -26,14 +27,23 @@ import org.uiowa.cs2820.engine.queryparser.QueryParser;
 public class Handler
 {
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("search")
     public String performSearch(@DefaultValue("") @QueryParam("query") String query) throws ParsingException
     {
         QueryParser parser = new QueryParser(new ComplexTokenizer(), new ComplexTokenParser(), true);
         Queryable parsedQuery = parser.parseQuery(query);
         Database database = getDatabase();
-        return database.matchQuery(parsedQuery).toString();
+        ArrayList<String> result = database.matchQuery(parsedQuery);
+        return this.toHTML(result);
+    }
+    
+    private String toHTML(ArrayList<String> idents) {
+    	String result = "<div><ul>";
+    	for(String e: idents) {
+    		result = result + "<li>" + e + "</li>"; 
+    	}
+    	result = result + "</ul></div>";
+    	return result;
     }
 
     private Database getDatabase()
