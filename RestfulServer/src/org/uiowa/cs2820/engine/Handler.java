@@ -26,7 +26,7 @@ import org.uiowa.cs2820.engine.queryparser.QueryParser;
 public class Handler
 {
     @GET
-    @Produces("text/plain")
+    @Produces(MediaType.APPLICATION_JSON)
     @Path("search")
     public String performSearch(@DefaultValue("") @QueryParam("query") String query) throws ParsingException
     {
